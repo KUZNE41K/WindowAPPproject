@@ -1,6 +1,7 @@
 #ifndef DataBaseUsers_H
 #define DataBaseUsers_H
 #include <pqxx/pqxx>
+#include "User.h"
 #include <iostream>
 
 class DataBaseUsers
@@ -12,6 +13,8 @@ class DataBaseUsers
 		DataBaseUsers(pqxx::connection& c) : conn(c) {}
 
 		void insert_users(pqxx::connection& conn, const std::string& login, const std::string& email, const std::string& password, const std::string& salt);
+		static User gerUserByLogin(pqxx::connection& conn, const std::string& login);
+
 };
 
 

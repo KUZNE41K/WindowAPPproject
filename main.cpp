@@ -7,7 +7,7 @@
 #include <pqxx/pqxx>
 #include <windows.h>
 #include "Connection.h"
-#include "DataBaseUsers.h"
+#include "UserValidator.h"
 
 
 
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 		{
 			std::cout << "PostgreSQL version: " << result[0][0].as<std::string>() << std::endl;
 		}
-
+		/*
 		try
 		{
 			pqxx::work transactionsCreateTable(conn);
@@ -70,6 +70,22 @@ int main(int argc, char* argv[])
 		{
 			std::cerr << "Error inserting user: " << e.what() << std::endl;
 		}
+		*/
+
+
+		std::string inputLogin = "test_user";
+
+		User user = DataBaseUsers::gerUserByLogin(conn, inputLogin);
+
+		if (UserValidator::identification(user,inputLogin))
+		{
+			std::cout << "Identification successful for user: " << user.login_ << std::endl;
+		}
+		else
+		{
+			std::cout << "Identification failed for user: " << user.login_ << std::endl;
+		}
+
 	}
 	catch (const std::exception& e)
 	{

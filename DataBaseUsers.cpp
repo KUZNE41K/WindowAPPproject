@@ -15,3 +15,18 @@ void DataBaseUsers::insert_users(pqxx::connection& conn, const std::string& logi
 		std::cout << "Error inserting user." << std::endl;
 	}
 }
+
+User DataBaseUsers::gerUserByLogin(pqxx::connection& conn, const std::string& login)
+{
+	pqxx::work txn(conn);
+
+	pqxx::result res = txn.exec("SELECT login, email, password, salt FROM users WHERE login = $1",
+		pqxx::params{ login });
+	txn.commit();
+
+	if (res.empty())
+	{
+		throw std::runtime_error("User not found");
+	}
+	return User(res[0][0].as<std::string>(), res[0][1].as<std::string>(), res[0][2].as<std::string>(), res[0][3].as<std::string>());
+}
