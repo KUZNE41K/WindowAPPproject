@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Validator">
+      <UniqueIdentifier>{ff6603fd-3a1f-44fa-ab50-3caa59386294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DataBase">
+      <UniqueIdentifier>{496aa985-b487-43f5-9ee5-8767c2c04070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Password">
+      <UniqueIdentifier>{0601a956-bab5-472d-a1ee-f59b5a3572aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,22 +30,34 @@
     <ClCompile Include="DataBaseUsers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="generate_salt.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="User.h">
+      <Filter>Header Files\Validator</Filter>
     </ClInclude>
-    <ClInclude Include="Hash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadeKey.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Insert_usersr.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="UserValidator.h">
+      <Filter>Header Files\Validator</Filter>
     </ClInclude>
     <ClInclude Include="DataBaseUsers.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>Header Files\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="generate_salt.h">
+      <Filter>Header Files\Password</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash.h">
+      <Filter>Header Files\Password</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadeKey.h">
+      <Filter>Header Files\Password</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

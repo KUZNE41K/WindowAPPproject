@@ -145,15 +145,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="DataBaseUsers.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="UserValidator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="DataBaseUsers.h" />
     <ClInclude Include="generate_salt.h" />
     <ClInclude Include="Hash.h" />
-    <ClInclude Include="Insert_usersr.h" />
     <ClInclude Include="ReadeKey.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="UserValidator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

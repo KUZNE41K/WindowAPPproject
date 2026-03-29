@@ -6,6 +6,8 @@
 #include "DataBaseUsers.h"
 #include <pqxx/pqxx>
 #include <windows.h>
+#include "Connection.h"
+#include "DataBaseUsers.h"
 
 
 
@@ -14,45 +16,66 @@ int main(int argc, char* argv[])
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	std::string salt = generate_salt();
-	std::cout << salt;
+	Connections db;
 
-	std::string password = "jfbvvjfn";
-	std::cout << salt << "\n";
-	std::cout << password << "\n";
-
-	std::string Hash = hashPasswordWithSalt(password,salt);
-	std::cout << Hash;
+	if (!db.connectDataBase())
+	{
+		std::cerr << "Failed to connect to the database." << std::endl;
+		return 1;
+	}
 
 	try
 	{
-		pqxx::connection cx("dbname = postgres user = postgres password = kuzykuzn hostaddr = 127.0.0.1 port = 5432");
+		auto& conn = db.getConnection();
+		pqxx::work transaction(conn);
 
-		if (cx.is_open()) {
-			std::cout << "Opened database successfully: " << cx.dbname() << std::endl;
+		auto result = transaction.exec("SELECT version()");
+		transaction.commit();
+
+		if (!result.empty())
+		{
+			std::cout << "PostgreSQL version: " << result[0][0].as<std::string>() << std::endl;
 		}
-		else {
-			std::cout << "Can't open database" << std::endl;
-			return 1;
+
+		try
+		{
+			pqxx::work transactionsCreateTable(conn);
+
+			transactionsCreateTable.exec("CREATE TABLE IF NOT EXISTS users ("
+				"iser_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
+				"login VARCHAR(255) NOT NULL UNIQUE,"
+				"email VARCHAR(255) NOT NULL UNIQUE,"
+				"password VARCHAR(255) NOT NULL,"
+				"salt VARCHAR(255) NOT NULL"
+				")");
+
+			transactionsCreateTable.commit();
+			std::cout << "Table 'users' created successfully." << std::endl;
 		}
+		catch (const std::exception& e)
+		{
+			std::cerr << "Error creating table: " << e.what() << std::endl;
+		}
+		try {
+			DataBaseUsers dbUsers(conn);
+			std::string login = "test_user";
+			std::string email = "kuzmebkovniki1ta@gmail.com";
+			std::string password = "1212";
+			std::string salt = generate_salt();
 
-		/*
-		std::string sql = "CREATE TABLE USERS ("
-			"ID SERIAL PRIMARY KEY     NOT NULL," \
-			"LOGIN           TEXT    NOT NULL," \
-			"PASSWORD        TEXT    NOT NULL);";
-		*/
+			dbUsers.insert_users(conn, login, email, password, salt);
 
-		std::string login = "admin";
-		std::string password = Hash;
-
-
-		DataBaseUsers users(cx);
-		users.insert_users(cx, login, password);
-
+		}
+		catch (const std::exception& e)
+		{
+			std::cerr << "Error inserting user: " << e.what() << std::endl;
+		}
 	}
-	catch (const std::exception& e) {
-		std::cerr << e.what() << std::endl;
-		return 1;
+	catch (const std::exception& e)
+	{
+		std::cerr << "Database query error: " << e.what() << std::endl;
 	}
+	return 0;
+
+
 }
