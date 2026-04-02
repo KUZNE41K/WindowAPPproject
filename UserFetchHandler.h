@@ -1,6 +1,7 @@
 #ifndef USERFETCHHANDLER_H
 #define USERFETCHHANDLER_H
 #include "Handler.h"
+#include "UserRepository.h"
 #include <string>
 
 class UserRepository;
@@ -10,7 +11,7 @@ class UserFetchHandler : public Handler
 private:
 	std::shared_ptr<UserRepository> userRepository_;
 public:
-	explicit UserFetchHandler(std::shared_ptr<UserRepository> userRepository);
+	explicit UserFetchHandler(std::shared_ptr<UserRepository> repo);
 	~UserFetchHandler() override = default;
 	void handle(Request& request) override; // Этот метод будет извлекать 
 	//пользователя из базы данных на основе логина или электронной почты, предоставленных в запросе.

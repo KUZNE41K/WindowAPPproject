@@ -1,20 +1,26 @@
-#ifndef USER_H
-#define USER_H
-
+#pragma once
 #include <string>
 
 class User
 {
-public:
+private:
+	int id_;
 	std::string login_;
-	std::string email_;
-	std::string password_;
-	std::string salt_;
+	std::string passwordHash_;
+public:
+	User();
+	User(int id, const std::string& login, const std::string& passwordHash, const std::string& salt);
 
-	User(const std::string& login,
-		const std::string& email,
-		const std::string& password,
-		const std::string& salt) : login_(login), email_(email), password_(password), salt_(salt) {}
+	int getId() const;
+	std::string getLogin() const;
+	std::string getPasswordHash() const;
+
+	int setId(int id);
+	std::string setLogin(const std::string& login);
+	std::string setPasswordHash(const std::string& passwordHash);
+
+
+
+
+
 };
-
-#endif // USER_H

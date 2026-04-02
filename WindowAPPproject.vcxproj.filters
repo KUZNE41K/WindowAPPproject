@@ -31,6 +31,9 @@
     <Filter Include="Header Files\Repository">
       <UniqueIdentifier>{a54f5cec-b2e1-4cc6-a200-7030bf83654e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\model">
+      <UniqueIdentifier>{ec751333-8cfa-4077-88a2-aa904083e759}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,11 +54,17 @@
     <ClCompile Include="UserRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UserFetchHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserExistsHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="User.h">
-      <Filter>Header Files\Validator</Filter>
-    </ClInclude>
     <ClInclude Include="UserValidator.h">
       <Filter>Header Files\Validator</Filter>
     </ClInclude>
@@ -87,6 +96,12 @@
       <Filter>Header Files\Repository</Filter>
     </ClInclude>
     <ClInclude Include="UserFetchHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="UserExistsHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>
