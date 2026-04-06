@@ -11,7 +11,7 @@ project/
 │   ├── ValidationHandler +
 │   ├── UserFetchHandler+
 │   ├── UserExistsHandler+
-│   ├── UserNotExistsHandler
+│   ├── UserNotExistsHandler+
 │   ├── PasswordCheckHandler
 │   ├── CreateUserHandler
 │   └── CreateSessionHandler
@@ -26,7 +26,7 @@ project/
 │   └── Database +
 │
 └── utils/               # Утилиты
-    └── Hash
+    └── Hash+
 
 
 
