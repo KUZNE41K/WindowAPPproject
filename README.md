@@ -1,21 +1,29 @@
 
 project/
 │
+
 ├── main.cpp
-│
-├── core/                # Базовая логика
+
+├── core/  # Базовая логика
+
 │   ├── Request +
+
 │   └── Handler +
+
 │
-├── handlers/            # Цепочка обязанностей
+
+├── handlers/  # Цепочка обязанностей
+
 │   ├── ValidationHandler +
 │   ├── UserFetchHandler+
 │   ├── UserExistsHandler+
 │   ├── UserNotExistsHandler+
-│   ├── PasswordCheckHandler
+│   ├── PasswordCheckHandler+
+
 │   ├── CreateUserHandler
 │   └── CreateSessionHandler
 │
+
 ├── repository/          # Работа с данными
 │   └── UserRepository +
 │
