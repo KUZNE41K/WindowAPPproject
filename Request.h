@@ -2,6 +2,7 @@
 #define REQUEST_H
 #include <string>
 #include <memory>
+#include "User.h"
 
 
 

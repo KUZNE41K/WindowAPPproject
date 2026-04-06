@@ -1,16 +1,20 @@
 #include "User.h"
 
-User::User(): id_(0), login_(""), passwordHash_("")
+User::User(): id_(0), login_(""),email_(""), passwordHash_("")
 {
 }
 
-User::User(int id, const std::string& login, const std::string& passwordHash, const std::string& salt): id_(id), login_(login), passwordHash_(passwordHash)
+User::User(int id, const std::string& login,const std::string& email, const std::string& passwordHash): id_(id), login_(login),email_(emal), passwordHash_(passwordHash)
 {
 }
 
 int User::getId() const
 {
 	return id_;
+}
+std::string User::getEmail() const
+{
+	return email_;
 }
 std::string User::getLogin() const
 {
@@ -23,15 +27,19 @@ std::string User::getPasswordHash() const
 
 int User::setId(int id)
 {
-	this->id_ = id;
+	return this->id_ = id;
+}
+std::string User::setEmail(const std::string& email)
+{
+	return this ->email_ = email;
 }
 std::string User::setLogin(const std::string& login)
 {
-	this->login_ = login;
+	return this->login_ = login;
 }
 std::string User::setPasswordHash(const std::string& passwordHash)
 {
-	this->passwordHash_ = passwordHash;
+	return this->passwordHash_ = passwordHash;
 }
 
 

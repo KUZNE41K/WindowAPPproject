@@ -1,19 +1,19 @@
-#include <iomanip>
-#include <openssl/sha.h>
+#ifndef HASH_H
+#define HASH_H
+
 #include <string>
-#include <sstream>
+#include <argon2.h>
+#include <random>
+#include <vector>
+
+class Hash
+{
+public:
+	static std::string hash(const std::string& password);
+
+	static bool verifyPassword(const std::string& password, const std::string& hash);
+
+};
 
 
-std::string hashPasswordWithSalt(const std::string& password, const std::string& salt) {
-    std::string saltedPassword = password + salt;
-    unsigned char hash[SHA256_DIGEST_LENGTH];
-    SHA256(reinterpret_cast<const unsigned char*>(saltedPassword.c_str()), saltedPassword.size(), hash);
-
-    std::stringstream ss;
-    for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i) {
-        ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
-    }
-    return ss.str();
-
-    
-}
+#endif // !HASH_H

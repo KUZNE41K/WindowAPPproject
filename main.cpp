@@ -7,15 +7,44 @@
 #include <pqxx/pqxx>
 #include <windows.h>
 #include "Connection.h"
-#include "UserValidator.h"
+#include "Hash.h"
+
 
 
 
 int main(int argc, char* argv[])
 {
-	SetConsoleOutputCP(CP_UTF8);
-	SetConsoleCP(CP_UTF8);
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
 
+
+	std::string password;
+
+	// Ввод пароля (регистрация)
+	std::cout << "Введите пароль для регистрации: ";
+	std::cin >> password;
+
+	// Хэширование
+	std::string hash = Hash::hash(password);
+
+	std::cout << "\nСохранённый хэш:\n" << hash << std::endl;
+
+	//  Ввод пароля (вход)
+	std::string input;
+	std::cout << "\nВведите пароль для входа: ";
+	std::cin >> input;
+
+	//  Проверка
+	if (Hash::verifyPassword(input, hash)) {
+		std::cout << "Доступ разрешён " << std::endl;
+	}
+	else {
+		std::cout << "Неверный пароль " << std::endl;
+	}
+
+
+
+	/*
 	Connections db;
 
 	if (!db.connectDataBase())
@@ -72,7 +101,7 @@ int main(int argc, char* argv[])
 		}
 		*/
 
-
+		/*
 		std::string inputLogin = "test_user";
 
 		User user = DataBaseUsers::gerUserByLogin(conn, inputLogin);
@@ -91,6 +120,8 @@ int main(int argc, char* argv[])
 	{
 		std::cerr << "Database query error: " << e.what() << std::endl;
 	}
+
+	*/
 	return 0;
 
 

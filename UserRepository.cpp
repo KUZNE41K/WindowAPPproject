@@ -26,8 +26,7 @@ std::shared_ptr<User> UserRepository::findUserByField(const std::string& field, 
 				row["id"].as<int>(),
 				row["login"].as<std::string>(),
 				row["email"].as<std::string>(),
-				row["password"].as<std::string>(),
-				row["salt"].as<std::string>()
+				row["password"].as<std::string>()
 			);
 			return user;
 		}
@@ -57,9 +56,20 @@ std::shared_ptr<User> UserRepository::findUserByEmail(const std::string& email)
 	return findUserByField("email", email);
 }
 
-bool UserRepository::saveUser() // потом
+bool UserRepository::saveUser(std::shared_ptr<User>user)
 {
-	return false;
+	try {
+		pqxx::work txn(connection_->getConnection());
+		txn.exec("INSERT INTO users (login, email, password) VALUES ($1, $2, $3);"),
+			user ->getLogin(),user ->getEmail(), user->getPasswordHash(); // Здесь нужно будет передать реальные данные пользователя
+		txn.commit();
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error in saveUser: " << e.what() << std::endl;
+		return false;
+	}
 }
 
 bool UserRepository::updateUser()// потом

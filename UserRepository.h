@@ -2,6 +2,7 @@
 #define USERREPOSITORY_H
 #include "Connection.h"
 #include "Request.h"
+#include "User.h"
 #include <memory>
 #include <string>
 class UserRepository
@@ -17,7 +18,7 @@ public:
 	UserRepository(std::shared_ptr<Connections> conn);
 	std::shared_ptr<User> findUserByLogin(const std::string& login);
 	std::shared_ptr<User> findUserByEmail(const std::string& email);
-	bool saveUser();// потом
+	bool saveUser(std::shared_ptr<User>user);
 	bool updateUser();// потом
 
 

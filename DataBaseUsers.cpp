@@ -20,7 +20,7 @@ User DataBaseUsers::gerUserByLogin(pqxx::connection& conn, const std::string& lo
 {
 	pqxx::work txn(conn);
 
-	pqxx::result res = txn.exec("SELECT login, email, password, salt FROM users WHERE login = $1",
+	pqxx::result res = txn.exec("SELECT id, login, email, password, salt FROM users WHERE login = $1",
 		pqxx::params{ login });
 	txn.commit();
 
@@ -28,5 +28,11 @@ User DataBaseUsers::gerUserByLogin(pqxx::connection& conn, const std::string& lo
 	{
 		throw std::runtime_error("User not found");
 	}
-	return User(res[0][0].as<std::string>(), res[0][1].as<std::string>(), res[0][2].as<std::string>(), res[0][3].as<std::string>());
+	return User(
+		res[0][0].as<int>(), // id
+		res[0][1].as<std::string>(), // login
+		res[0][2].as<std::string>(), // email
+		res[0][3].as<std::string>(), // passwordHash
+		res[0][4].as<std::string>()  // salt
+	);
 }

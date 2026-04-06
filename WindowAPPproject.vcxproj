@@ -147,27 +147,32 @@
   <ItemGroup>
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="DataBaseUsers.cpp" />
+    <ClCompile Include="Hash.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PasswordCheckHandler.cpp" />
     <ClCompile Include="Request.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserExistsHandler.cpp" />
     <ClCompile Include="UserFetchHandler.cpp" />
+    <ClCompile Include="UserNotExistsHandler.cpp" />
     <ClCompile Include="UserRepository.cpp" />
-    <ClCompile Include="UserValidator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Connection.h" />
+    <ClInclude Include="CreateUserHandler.h" />
     <ClInclude Include="DataBaseUsers.h" />
     <ClInclude Include="generate_salt.h" />
     <ClInclude Include="Handler.h" />
     <ClInclude Include="Hash.h" />
+    <ClInclude Include="Hash1.h" />
+    <ClInclude Include="PasswordCheckHandler.h" />
     <ClInclude Include="ReadeKey.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserExistsHandler.h" />
     <ClInclude Include="UserFetchHandler.h" />
+    <ClInclude Include="UserNotExistsHandler.h" />
     <ClInclude Include="UserRepository.h" />
-    <ClInclude Include="UserValidator.h" />
     <ClInclude Include="ValidationHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
