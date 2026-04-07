@@ -22,17 +22,19 @@ public:
 	bool success_ = false;
 	std::string errorMessage_;
 	std::shared_ptr<User> user_;
+	std::string sessionToken_;
 
-	Request(const std::string& login,
+	Request( const std::string& login,
 		const std::string& email,
-		const std::string& password,
-		const std::string& salt) : login_(login), email_(email), password_(password), salt_(salt),success_(false),errorMessage_(""),user_(nullptr) {
+		const std::string& password
+		) : login_(login), email_(email), password_(password),success_(false),errorMessage_(""),user_(nullptr),sessionToken_("") {
 	}
 	~Request() = default;
 
 	void setSuccess(bool success);
 	void setErrorMessage(const std::string& errorMessage);
 	void setUser(std::shared_ptr<User> user);
+	
 
 };
 

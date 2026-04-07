@@ -76,3 +76,36 @@ bool UserRepository::updateUser()// потом
 {
 	return false;
 }
+
+bool UserRepository::saveSession(const std::string& userId, const std::string& token, int lifetimeSeconds)
+{
+	try {
+		pqxx::work txn(connection_->getConnection());
+
+		auto now = std::chrono::system_clock::now();
+		auto expires_time_t = std::chrono::system_clock::to_time_t(now + std::chrono::seconds(lifetimeSeconds));
+#if defined(_MSC_VER)
+		std::tm expires_tm;
+		gmtime_s(&expires_tm, &expires_time_t);
+#else
+		std::tm expires_tm = *std::gmtime(&expires_time_t);
+#endif
+		char buffer[20];
+		std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &expires_tm);
+		std::string expires_at_str(buffer);
+
+		txn.exec(
+			"INSERT INTO sessions (user_id, token, issued_at, expires_at, revoked) "
+			"VALUES ($1, $2, NOW(), $3, FALSE);"),
+			userId,
+			token,
+			expires_at_str;
+		return true;
+
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error in saveSession: " << e.what() << std::endl;
+		return false;
+	}
+}

@@ -22,5 +22,7 @@ public:
 	std::string setEmail(const std::string& email);
 	std::string setLogin(const std::string& login);
 	std::string setPasswordHash(const std::string& passwordHash);
+
+	bool isValid() const; 
 };
 #endif // !USER_H

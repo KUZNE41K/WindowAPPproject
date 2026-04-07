@@ -1,13 +1,20 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "generate_salt.h"
-#include "Hash.h"
+#include "UserRepository.h"
 #include "DataBaseUsers.h"
 #include <pqxx/pqxx>
 #include <windows.h>
 #include "Connection.h"
 #include "Hash.h"
+#include "CreateSessionHandler.h"
+#include "CreateUserHandler.h"
+#include "User.h"
+#include "Request.h"
+#include "Handler.h"
+#include "ValidationHandler.h"
+#include "UserFetchHandler.h"
+#include "UserNotExistsHandler.h"
 
 
 
@@ -16,8 +23,51 @@ int main(int argc, char* argv[])
 {
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
+	// конект к БД
+	Connections db;
+	db.connectDataBase();
+
+	UserRepository userRepo(std::make_shared<Connections>(db));
+
+	// рега
+
+	ValidationHandler registrationHandler;
+	UserFetchHandler regFetch(std::make_shared<UserRepository>(userRepo));
+	UserNotExistsHandler regNotExists;
+	CreateUserHandler createUser(UserRepository);
+
+	registrationHandler.setNext(std::make_shared<UserFetchHandler>(regFetch));
+	regFetch.setNext(std::make_shared<UserNotExistsHandler>(regNotExists));
+	regNotExists.setNext(std::make_shared<CreateUserHandler>(createUser));
+
+	Request reqistrationRequest("vfvfvfvfv", "dcdcd", "password123");
+	registrationHandler.handle(reqistrationRequest);
+
+	if(reqistrationRequest.success_)
+	{
+		std::cout << "User registered successfully!" << std::endl;
+	}
+	else
+	{
+		std::cout << "Registration failed: " << reqistrationRequest.errorMessage_ << std::endl;
+	}
+	
 
 
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	/*
 	std::string password;
 
 	// Ввод пароля (регистрация)
@@ -41,9 +91,7 @@ int main(int argc, char* argv[])
 	else {
 		std::cout << "Неверный пароль " << std::endl;
 	}
-
-
-
+*/
 	/*
 	Connections db;
 
@@ -100,8 +148,7 @@ int main(int argc, char* argv[])
 			std::cerr << "Error inserting user: " << e.what() << std::endl;
 		}
 		*/
-
-		/*
+	/*
 		std::string inputLogin = "test_user";
 
 		User user = DataBaseUsers::gerUserByLogin(conn, inputLogin);

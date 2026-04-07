@@ -5,8 +5,8 @@ void DataBaseUsers::insert_users(pqxx::connection& conn, const std::string& logi
 	try
 	{
 		pqxx::work txn(conn);
-		pqxx::result res = txn.exec("INSERT INTO users(login,email,password,salt) VALUES($1,$2,$3,$4)",
-			pqxx::params{ login, email,password,salt });
+		pqxx::result res = txn.exec("INSERT INTO users(login,email,password,) VALUES($1,$2,$3)",
+			pqxx::params{ login, email,password });
 		std::cerr << "User inserted successfully." << std::endl;
 		txn.commit();
 	}
@@ -20,7 +20,7 @@ User DataBaseUsers::gerUserByLogin(pqxx::connection& conn, const std::string& lo
 {
 	pqxx::work txn(conn);
 
-	pqxx::result res = txn.exec("SELECT id, login, email, password, salt FROM users WHERE login = $1",
+	pqxx::result res = txn.exec("SELECT id, login, email, password FROM users WHERE login = $1",
 		pqxx::params{ login });
 	txn.commit();
 
@@ -32,7 +32,6 @@ User DataBaseUsers::gerUserByLogin(pqxx::connection& conn, const std::string& lo
 		res[0][0].as<int>(), // id
 		res[0][1].as<std::string>(), // login
 		res[0][2].as<std::string>(), // email
-		res[0][3].as<std::string>(), // passwordHash
-		res[0][4].as<std::string>()  // salt
+		res[0][3].as<std::string>()  // passwordHash
 	);
 }

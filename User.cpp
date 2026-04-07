@@ -4,7 +4,7 @@ User::User(): id_(0), login_(""),email_(""), passwordHash_("")
 {
 }
 
-User::User(int id, const std::string& login,const std::string& email, const std::string& passwordHash): id_(id), login_(login),email_(emal), passwordHash_(passwordHash)
+User::User(int id, const std::string& login,const std::string& email, const std::string& passwordHash): id_(id), login_(login),email_(email), passwordHash_(passwordHash)
 {
 }
 
@@ -40,6 +40,11 @@ std::string User::setLogin(const std::string& login)
 std::string User::setPasswordHash(const std::string& passwordHash)
 {
 	return this->passwordHash_ = passwordHash;
+}
+
+bool User::isValid() const
+{
+	return id_ != 0 && !login_.empty();
 }
 
 

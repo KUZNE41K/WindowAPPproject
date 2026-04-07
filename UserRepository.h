@@ -5,6 +5,8 @@
 #include "User.h"
 #include <memory>
 #include <string>
+#include <chrono>
+
 class UserRepository
 {
 private:
@@ -20,6 +22,7 @@ public:
 	std::shared_ptr<User> findUserByEmail(const std::string& email);
 	bool saveUser(std::shared_ptr<User>user);
 	bool updateUser();// потом
+	bool saveSession(const std::string& userId, const std::string& token, int lifetimeSeconds);
 
 
 };
