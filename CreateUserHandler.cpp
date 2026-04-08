@@ -1,6 +1,6 @@
 #include "CreateUserHandler.h"
 
-CreateUserHandler::CreateUserHandler(UserRepository& repo) : repo_(repo){}
+CreateUserHandler::CreateUserHandler(std::shared_ptr<UserRepository> repo) : repo_(repo){}
 
 
 void CreateUserHandler::handle(Request& request)
@@ -28,7 +28,7 @@ void CreateUserHandler::createUser(Request& request)
 	userPtr->setEmail(request.email_);
 	userPtr->setPasswordHash(passwordHash);
 
-	if (!repo_.saveUser(userPtr))
+	if (!repo_->saveUser(userPtr))
 	{
 		request.setSuccess(false);
 		request.setErrorMessage("Failed to create user.");

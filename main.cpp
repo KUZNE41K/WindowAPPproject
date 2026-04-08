@@ -4,7 +4,6 @@
 #include "UserRepository.h"
 #include "DataBaseUsers.h"
 #include <pqxx/pqxx>
-#include <windows.h>
 #include "Connection.h"
 #include "Hash.h"
 #include "CreateSessionHandler.h"
@@ -19,22 +18,22 @@
 
 
 
-int main(int argc, char* argv[])
+int main()
 {
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
 	// конект к БД
-	Connections db;
-	db.connectDataBase();
+	auto db = std::make_shared<Connections>();
+	db->connectDataBase();
 
-	UserRepository userRepo(std::make_shared<Connections>(db));
+	auto userRepo = std::make_shared<UserRepository>(db);
 
 	// рега
 
 	ValidationHandler registrationHandler;
-	UserFetchHandler regFetch(std::make_shared<UserRepository>(userRepo));
+	UserFetchHandler regFetch(userRepo);
 	UserNotExistsHandler regNotExists;
-	CreateUserHandler createUser(UserRepository);
+	CreateUserHandler createUser(userRepo);
 
 	registrationHandler.setNext(std::make_shared<UserFetchHandler>(regFetch));
 	regFetch.setNext(std::make_shared<UserNotExistsHandler>(regNotExists));
