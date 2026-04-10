@@ -1,7 +1,9 @@
 #include "CreateSessionHandler.h"
 
-CreateSessionHandler::CreateSessionHandler(const std::string& jwtSecret, std::shared_ptr<Connections> conn)
-    : jwtSecret_(jwtSecret), repo_(conn){}
+CreateSessionHandler::CreateSessionHandler( std::shared_ptr<UserRepository> repo)
+	: repo_(std::move(repo))
+{
+}
 
 void CreateSessionHandler::handle(Request& request)
 {
@@ -13,8 +15,8 @@ void CreateSessionHandler::handle(Request& request)
 	}
 	int lifetimeSeconds = 3600; // 1 hour, можно сделать параметром метода или константой
 	std::string token = generateJwtToken(std::to_string(request.user_->getId()));
-	saveSessionToDatabase(std::to_string(request.user_->getId()), token,lifetimeSeconds);// lifetimeSeconds добавить как параметр метода или использовать константное значение
-	request.sessionToken_ = token;
+	saveSessionToDatabase(std::to_string(request.user_->getId()), token, lifetimeSeconds);// lifetimeSeconds добавить как параметр метода или использовать константное значение
+	request.jwtToken_ = token;
 	request.setSuccess(true);
 	if (next_)
 	{
@@ -25,7 +27,7 @@ void CreateSessionHandler::handle(Request& request)
 std::string CreateSessionHandler::generateJwtToken(const std::string& userId)
 {
 	auto now = std::chrono::system_clock::now();
-	auto expires = now + std::chrono::hours(24); // Token valid for 24 hours
+	auto expires = now + std::chrono::hours(1); // Token valid for 1 hour
 
 	auto token = jwt::create()
 		.set_issuer("MyApp")
@@ -38,5 +40,5 @@ std::string CreateSessionHandler::generateJwtToken(const std::string& userId)
 
 bool CreateSessionHandler::saveSessionToDatabase(const std::string& userId, const std::string& token, int lifetimeSeconds)
 {
-	return repo_.saveSession(userId, token,lifetimeSeconds);
+    return repo_->saveSession(userId, token, lifetimeSeconds);
 }

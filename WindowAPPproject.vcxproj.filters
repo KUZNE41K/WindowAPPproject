@@ -37,6 +37,9 @@
     <Filter Include="Header Files\utils">
       <UniqueIdentifier>{c87c4dc6-117f-44a0-841a-05e84474d7a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AuthService">
+      <UniqueIdentifier>{8b5bf8c1-c8db-4619-9d7d-275956632ba3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -76,6 +79,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CreateSessionHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AuthService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -130,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="CreateSessionHandler.h">
       <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="AuthService.h">
+      <Filter>Header Files\AuthService</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

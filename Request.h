@@ -22,23 +22,23 @@ public:
 	bool success_ = false;
 	std::string errorMessage_;
 	std::shared_ptr<User> user_;
-	std::string sessionToken_;
 	std::string jwtToken_; 
 
 	Request( const std::string& login,
 		const std::string& email,
 		const std::string& password
-		) : login_(login), email_(email), password_(password),success_(false),errorMessage_(""),user_(nullptr),sessionToken_("") {
+		) : login_(login), email_(email), password_(password),success_(false),errorMessage_(""),user_(nullptr),jwtToken_("") {
 	}
 	Request(const std::string& login, const std::string& password)
-    : login_(login), email_(""), password_(password), success_(false), errorMessage_(""), user_(nullptr), sessionToken_("") {
+    : login_(login), email_(""), password_(password), success_(false), errorMessage_(""), user_(nullptr), jwtToken_("") {
 	}
 	~Request() = default;
 
 	void setSuccess(bool success);
 	void setErrorMessage(const std::string& errorMessage);
 	void setUser(std::shared_ptr<User> user);
-	
+	std::shared_ptr<User> getUser() const;
+	void setSessionToken(const std::string& jwtToken);
 
 };
 

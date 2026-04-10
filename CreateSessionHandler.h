@@ -6,17 +6,19 @@
 #include <string>
 #include <jwt-cpp/jwt.h>
 #include <chrono>
+#include <memory>
 
 class CreateSessionHandler : public Handler
 {
 public:
-	explicit CreateSessionHandler(const std::string& jwtSecret, std::shared_ptr<Connections> conn) : userRepo_(repo) {};
+	explicit CreateSessionHandler(std::shared_ptr<UserRepository> repo);
+
 	void handle(Request& request) override;
 
 private:
 	std::string jwtSecret_;
-	UserRepository repo_; 
-	std::string generateJwtToken(const std::string &userId);
+	std::shared_ptr<UserRepository> repo_;
+	std::string generateJwtToken(const std::string& userId);
 	bool saveSessionToDatabase(const std::string& userId, const std::string& token, int lifetimeSeconds);
 };
 

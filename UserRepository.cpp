@@ -101,10 +101,10 @@ bool UserRepository::saveSession(const std::string& userId, const std::string& t
 
 		txn.exec(
 			"INSERT INTO sessions (user_id, token, issued_at, expires_at, revoked) "
-			"VALUES ($1, $2, NOW(), $3, FALSE);"),
-			userId,
-			token,
-			expires_at_str;
+			"VALUES ($1, $2, NOW(), $3, FALSE);",
+			pqxx::params{userId, token, expires_at_str}
+		);
+		txn.commit();
 		return true;
 
 	}

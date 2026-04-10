@@ -17,3 +17,13 @@ void Request::setUser(std::shared_ptr<User> user)
 	user_ = user;
 }
 
+std::shared_ptr<User> Request::getUser() const
+{
+	return user_;
+}
+
+void Request::setSessionToken(const std::string& jwtToken)
+{
+	jwtToken_ = jwtToken;
+}
+
