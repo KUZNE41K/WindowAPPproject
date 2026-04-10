@@ -14,33 +14,39 @@
 #include "ValidationHandler.h"
 #include "UserFetchHandler.h"
 #include "UserNotExistsHandler.h"
+#include "UserExistsHandler.h"
+#include "PasswordCheckHandler.h"
 
 
-
+extern "C" __declspec(dllimport) int __stdcall SetConsoleCP(unsigned int wCodePageID); // не трогать
 
 int main()
 {
-	SetConsoleOutputCP(1251);
-	SetConsoleCP(1251);
+	
+	SetConsoleOutputCP(65001); // не трогать
+	SetConsoleCP(65001); // не трогать
+	
 	// конект к БД
+	
 	auto db = std::make_shared<Connections>();
 	db->connectDataBase();
-
+	
 	auto userRepo = std::make_shared<UserRepository>(db);
 
 	// рега
+	/*
+	auto registrationValidation = std::make_shared<ValidationHandler>();
+	auto regFetch = std::make_shared<UserFetchHandler>(userRepo);
+	auto regNotExists = std::make_shared<UserNotExistsHandler>();
+	auto createUser = std::make_shared<CreateUserHandler>(userRepo);
 
-	ValidationHandler registrationHandler;
-	UserFetchHandler regFetch(userRepo);
-	UserNotExistsHandler regNotExists;
-	CreateUserHandler createUser(userRepo);
 
-	registrationHandler.setNext(std::make_shared<UserFetchHandler>(regFetch));
-	regFetch.setNext(std::make_shared<UserNotExistsHandler>(regNotExists));
-	regNotExists.setNext(std::make_shared<CreateUserHandler>(createUser));
+	registrationValidation->setNext(regFetch);
+	regFetch->setNext(regNotExists);
+	regNotExists->setNext(createUser);
 
-	Request reqistrationRequest("vfvfvfvfv", "dcdcd", "password123");
-	registrationHandler.handle(reqistrationRequest);
+	Request reqistrationRequest("vfvfvfv11f1v12", "dcdc1d1212@gmail.com", "password123");
+	registrationValidation->handle(reqistrationRequest);
 
 	if(reqistrationRequest.success_)
 	{
@@ -50,6 +56,41 @@ int main()
 	{
 		std::cout << "Registration failed: " << reqistrationRequest.errorMessage_ << std::endl;
 	}
+*/
+
+
+	//вход
+	auto loginValidation = std::make_shared<ValidationHandler>();
+	auto loginFetch = std::make_shared<UserFetchHandler>(userRepo);
+	auto loginExists = std::make_shared<UserExistsHandler>();
+	auto passwordCheck = std::make_shared<PasswordCheckHandler>();
+	auto createSession = std::make_shared<CreateSessionHandler>(userRepo); // генерирует JWT и сохраняет в БД
+
+	loginValidation->setNext(loginFetch);
+	loginFetch->setNext(loginExists);
+	loginExists->setNext(passwordCheck);
+	passwordCheck->setNext(createSession);
+
+	// создаём Request для входа
+	Request loginRequest("vfvfvfv11f1v12", "password123"); // логин и пароль
+
+	// запускаем цепочку
+	loginValidation->handle(loginRequest);
+
+	if (loginRequest.success_)
+	{
+		std::cout << "Login success! JWT: " << loginRequest.jwtToken_ << std::endl;
+	}
+	else
+	{
+		std::cout << "Login failed: " << loginRequest.errorMessage_ << std::endl;
+	}
+
+
+	// закончить тесты входа и регистрации
+	
+
+
 	
 
 

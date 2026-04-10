@@ -23,11 +23,15 @@ public:
 	std::string errorMessage_;
 	std::shared_ptr<User> user_;
 	std::string sessionToken_;
+	std::string jwtToken_; 
 
 	Request( const std::string& login,
 		const std::string& email,
 		const std::string& password
 		) : login_(login), email_(email), password_(password),success_(false),errorMessage_(""),user_(nullptr),sessionToken_("") {
+	}
+	Request(const std::string& login, const std::string& password)
+    : login_(login), email_(""), password_(password), success_(false), errorMessage_(""), user_(nullptr), sessionToken_("") {
 	}
 	~Request() = default;
 

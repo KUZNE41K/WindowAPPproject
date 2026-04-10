@@ -12,7 +12,7 @@ class DataBaseUsers
 	public:
 		DataBaseUsers(pqxx::connection& c) : conn(c) {}
 
-		void insert_users(pqxx::connection& conn, const std::string& login, const std::string& email, const std::string& password, const std::string& salt);
+		void insert_users(pqxx::connection& conn, const std::string& login, const std::string& email, const std::string& password_hash);
 		static User gerUserByLogin(pqxx::connection& conn, const std::string& login);
 
 };

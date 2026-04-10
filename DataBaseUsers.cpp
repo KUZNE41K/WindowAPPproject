@@ -1,12 +1,12 @@
 #include "DataBaseUsers.h"
 
-void DataBaseUsers::insert_users(pqxx::connection& conn, const std::string& login, const std::string& email, const std::string& password,const std::string& salt)
+void DataBaseUsers::insert_users(pqxx::connection& conn, const std::string& login, const std::string& email, const std::string& password_hash)
 {
 	try
 	{
 		pqxx::work txn(conn);
-		pqxx::result res = txn.exec("INSERT INTO users(login,email,password,) VALUES($1,$2,$3)",
-			pqxx::params{ login, email,password });
+		pqxx::result res = txn.exec("INSERT INTO users(login,email,password_hash) VALUES($1,$2,$3)",
+			pqxx::params{ login, email,password_hash });
 		std::cerr << "User inserted successfully." << std::endl;
 		txn.commit();
 	}

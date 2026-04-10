@@ -10,7 +10,7 @@
 class CreateSessionHandler : public Handler
 {
 public:
-	explicit CreateSessionHandler(const std::string& jwtSecret, std::shared_ptr<Connections> conn);
+	explicit CreateSessionHandler(const std::string& jwtSecret, std::shared_ptr<Connections> conn) : userRepo_(repo) {};
 	void handle(Request& request) override;
 
 private:
