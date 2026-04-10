@@ -1,46 +1,7 @@
+Закончена цепочка обязонастей для реги и входа с приминением jwt токена 10.04.26
 
-project/
-│
+Задачи:
+В цепочке обязаностей сделать чтение json запросов
+Сделать сервер на boost
+реализовать подключение к приложению
 
-├── main.cpp
-
-├── core/  # Базовая логика
-
-│   ├── Request +
-
-│   └── Handler +
-
-│
-
-├── handlers/  # Цепочка обязанностей
-
-│   ├── ValidationHandler +
-│   ├── UserFetchHandler+
-│   ├── UserExistsHandler+
-│   ├── UserNotExistsHandler+
-│   ├── PasswordCheckHandler+
-
-│   ├── CreateUserHandler
-│   └── CreateSessionHandler
-│
-
-├── repository/          # Работа с данными
-│   └── UserRepository +
-│
-├── models/              # Сущности
-│   └── User +
-│
-├── database/            # База данных
-│   └── Database +
-│
-└── utils/               # Утилиты
-    └── Hash+
-
-
-
-
-реализовать UserNotExistsHandler
-
-
-
-    
