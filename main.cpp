@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "RequestParser.h"
+
 
 #include "AuthService.h"
 #include "Connection.h"
@@ -10,17 +12,11 @@ extern "C" __declspec(dllimport) int __stdcall SetConsoleCP(unsigned int wCodePa
 
 int main()
 {
-	std::string user = "djpj";
-	std::string password = "password123";
-	
-	 // не трогать
-	SetConsoleCP(65001); // не трогать
+	std::string jsonRequest = R"({"login": "user1", "password": "pass123"})";
 
-	AuthService authService(std::make_shared<UserRepository>(std::make_shared<Connections>()));
-	authService.registerUser(user,password);
-	authService.login(user,password);
-
-
+	auto request = RequestParser::parseRequest(jsonRequest);
+	std::cout << "Login " << request->login_ << std::endl;
+	std::cout << "Password " << request->password_ << std::endl;
 
 	return 0;
 

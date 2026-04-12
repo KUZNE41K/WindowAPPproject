@@ -24,14 +24,24 @@ public:
 	std::shared_ptr<User> user_;
 	std::string jwtToken_; 
 
+
+	Request()
+		: login_(""), email_(""), password_(""),
+		salt_(""), success_(false), errorMessage_(""),
+		user_(nullptr), jwtToken_("") {
+	} 
+	// конструктор по умолчанию, который инициализирует все поля пустыми строками, устанавливает флаг успеха в false, а указатель на пользователя в nullptr.
+
 	Request( const std::string& login,
 		const std::string& email,
 		const std::string& password
 		) : login_(login), email_(email), password_(password),success_(false),errorMessage_(""),user_(nullptr),jwtToken_("") {
 	}
+	// конструктор, который принимает логин, электронную почту и пароль в качестве аргументов и инициализирует соответствующие поля. Остальные поля устанавливаются по умолчанию.
 	Request(const std::string& login, const std::string& password)
     : login_(login), email_(""), password_(password), success_(false), errorMessage_(""), user_(nullptr), jwtToken_("") {
 	}
+	
 	~Request() = default;
 
 	void setSuccess(bool success);

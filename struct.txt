@@ -1,0 +1,42 @@
+project/
+|
+ЧЧЧ main.cpp
+|
+ЧЧЧ server/                    # HTTP сервер
+|   ЧЧЧ RequestParser +
+|   ЧЧЧ ResponseBuilder +
+|   ЧЧЧ Router +
+|   ЧЧЧ Session далее
+|   ЧЧЧ HttpServer
+|
+ЧЧЧ services/                  # бизнес-логика (сценарии)
+|   ЧЧЧ AuthService
+|
+ЧЧЧ core/                      # база паттерна
+|   ЧЧЧ Request
+|   ЧЧЧ Handler
+|
+ЧЧЧ handlers/                  # цепочка об€занностей
+|   ЧЧЧ ValidationHandler
+|   ЧЧЧ UserFetchHandler
+|   ЧЧЧ UserExistsHandler
+|   ЧЧЧ UserNotExistsHandler
+|   ЧЧЧ PasswordCheckHandler
+|   ЧЧЧ CreateUserHandler
+|   ЧЧЧ CreateSessionHandler
+|
+ЧЧЧ repository/                # работа с данными
+|   ЧЧЧ UserRepository
+|
+ЧЧЧ database/                  # Ѕƒ + пул соединений
+|   ЧЧЧ Database
+|   ЧЧЧ ConnectionPool
+|
+ЧЧЧ models/                    # сущности
+|   ЧЧЧ User
+|
+ЧЧЧ utils/                     # утилиты
+|   ЧЧЧ Hash
+|
+ЧЧЧ config/
+    ЧЧЧ Config

@@ -40,6 +40,9 @@
     <Filter Include="Header Files\AuthService">
       <UniqueIdentifier>{8b5bf8c1-c8db-4619-9d7d-275956632ba3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\server">
+      <UniqueIdentifier>{021e97a7-68c4-4989-8cbe-5b5a53406443}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -82,6 +85,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AuthService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ResponseBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,5 +149,16 @@
     <ClInclude Include="AuthService.h">
       <Filter>Header Files\AuthService</Filter>
     </ClInclude>
+    <ClInclude Include="RequestParser.h">
+      <Filter>Header Files\server</Filter>
+    </ClInclude>
+    <ClInclude Include="ResponseBuilder.h">
+      <Filter>Header Files\server</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="struct.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
