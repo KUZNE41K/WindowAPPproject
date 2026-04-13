@@ -93,6 +93,12 @@
     <ClCompile Include="ResponseBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Router.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBaseUsers.h">
@@ -153,6 +159,12 @@
       <Filter>Header Files\server</Filter>
     </ClInclude>
     <ClInclude Include="ResponseBuilder.h">
+      <Filter>Header Files\server</Filter>
+    </ClInclude>
+    <ClInclude Include="Router.h">
+      <Filter>Header Files\server</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
       <Filter>Header Files\server</Filter>
     </ClInclude>
   </ItemGroup>

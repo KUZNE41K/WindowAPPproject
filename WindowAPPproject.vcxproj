@@ -164,6 +164,8 @@
     <ClCompile Include="Request.cpp" />
     <ClCompile Include="RequestParser.cpp" />
     <ClCompile Include="ResponseBuilder.cpp" />
+    <ClCompile Include="Router.cpp" />
+    <ClCompile Include="Session.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserExistsHandler.cpp" />
     <ClCompile Include="UserFetchHandler.cpp" />
@@ -185,6 +187,8 @@
     <ClInclude Include="Request.h" />
     <ClInclude Include="RequestParser.h" />
     <ClInclude Include="ResponseBuilder.h" />
+    <ClInclude Include="Router.h" />
+    <ClInclude Include="Session.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserExistsHandler.h" />
     <ClInclude Include="UserFetchHandler.h" />
