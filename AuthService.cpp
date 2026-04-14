@@ -12,9 +12,9 @@
 AuthService::AuthService(std::shared_ptr<UserRepository> userRepository): userRepository_(userRepository)
 {
 }
-// сделатть что бы данные для входа и регестрации приходили из json запроса, который будет приходить на сервер, а пока для тестов просто так
 
-void AuthService::registerUser(std::string user, std::string password)
+
+void AuthService::registerUser(std::string user,std::string email, std::string password)
 {
 	auto db = std::make_shared<Connections>();
 	db->connectDataBase();
@@ -32,7 +32,7 @@ void AuthService::registerUser(std::string user, std::string password)
 	regFetch->setNext(regNotExists);
 	regNotExists->setNext(createUser);
 
-	Request reqistrationRequest(user, "dcdc11d3121022@gmail.com", password);
+	Request reqistrationRequest(user, email, password);
 	registrationValidation->handle(reqistrationRequest);
 
 	if (reqistrationRequest.success_)
@@ -45,7 +45,7 @@ void AuthService::registerUser(std::string user, std::string password)
 	}
 }
 
-void AuthService::login(std::string user, std::string password)
+void AuthService::login(std::string login, std::string password)
 {
 	auto db = std::make_shared<Connections>();
 	db->connectDataBase();
@@ -63,7 +63,7 @@ void AuthService::login(std::string user, std::string password)
 	loginExists->setNext(passwordCheck);
 	passwordCheck->setNext(createSession);
 
-	Request loginRequest(user, password); // логин и пароль
+	Request loginRequest(login, password); // логин и пароль
 
 	// запускаем цепочку
 	loginValidation->handle(loginRequest);

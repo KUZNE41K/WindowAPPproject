@@ -39,7 +39,7 @@ public:
 	}
 	// конструктор, который принимает логин, электронную почту и пароль в качестве аргументов и инициализирует соответствующие поля. Остальные поля устанавливаются по умолчанию.
 	Request(const std::string& login, const std::string& password)
-    : login_(login), email_(""), password_(password), success_(false), errorMessage_(""), user_(nullptr), jwtToken_("") {
+    : login_(login), password_(password), success_(false), errorMessage_(""), user_(nullptr), jwtToken_("") {
 	}
 	
 	~Request() = default;

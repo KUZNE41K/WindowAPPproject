@@ -12,7 +12,7 @@ public:
 
 	void handle(Request& request) override
 	{
-		if (request.login_.empty()|| request.password_.empty())
+		if (request.login_.empty() || request.password_.empty())
 		{
 			request.setErrorMessage("Login and password cannot be empty.");
 			request.success_ = false;

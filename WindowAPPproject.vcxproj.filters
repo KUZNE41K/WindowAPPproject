@@ -99,6 +99,9 @@
     <ClCompile Include="Session.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HttpServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBaseUsers.h">
@@ -165,6 +168,9 @@
       <Filter>Header Files\server</Filter>
     </ClInclude>
     <ClInclude Include="Session.h">
+      <Filter>Header Files\server</Filter>
+    </ClInclude>
+    <ClInclude Include="HttpServer.h">
       <Filter>Header Files\server</Filter>
     </ClInclude>
   </ItemGroup>

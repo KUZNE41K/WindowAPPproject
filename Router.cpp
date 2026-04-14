@@ -15,7 +15,7 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
 	}
 	else if (path == "/register")
 	{
-		authService_->registerUser(request->login_, request->password_);
+		authService_->registerUser(request->login_, request->email_ , request->password_);
 	}
 	else
 	{

@@ -159,6 +159,7 @@
     <ClCompile Include="CreateUserHandler.cpp" />
     <ClCompile Include="DataBaseUsers.cpp" />
     <ClCompile Include="Hash.cpp" />
+    <ClCompile Include="HttpServer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PasswordCheckHandler.cpp" />
     <ClCompile Include="Request.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Handler.h" />
     <ClInclude Include="Hash.h" />
     <ClInclude Include="Hash1.h" />
+    <ClInclude Include="HttpServer.h" />
     <ClInclude Include="PasswordCheckHandler.h" />
     <ClInclude Include="ReadeKey.h" />
     <ClInclude Include="Request.h" />
