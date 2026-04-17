@@ -101,7 +101,12 @@ bool UserRepository::saveSession(const std::string& userId, const std::string& t
 
 		txn.exec(
 			"INSERT INTO sessions (user_id, token, issued_at, expires_at, revoked) "
-			"VALUES ($1, $2, NOW(), $3, FALSE);",
+			"VALUES ($1, $2, NOW(), $3, FALSE) "
+			"ON CONFLICT (token) DO UPDATE SET "
+			"user_id = EXCLUDED.user_id, "
+			"issued_at = EXCLUDED.issued_at, "
+			"expires_at = EXCLUDED.expires_at, "
+			"revoked = FALSE;",
 			pqxx::params{userId, token, expires_at_str}
 		);
 		txn.commit();

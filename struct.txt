@@ -40,3 +40,30 @@ project/
 |
 ——— config/
     ——— Config
+
+
+
+    $body = @{
+    type     = "register"
+    login    = "testuser"
+    email    = "user@example.com"
+    password = "securePass123"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/register" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
+
+
+
+    $body = @{
+    type     = "login"
+    login    = "testuser"
+    password = "securePass123"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/login" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"

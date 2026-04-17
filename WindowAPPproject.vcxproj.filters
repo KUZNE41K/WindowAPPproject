@@ -43,6 +43,9 @@
     <Filter Include="Header Files\server">
       <UniqueIdentifier>{021e97a7-68c4-4989-8cbe-5b5a53406443}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Jwt">
+      <UniqueIdentifier>{0d522543-611c-4c12-a6d1-228c97fae692}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

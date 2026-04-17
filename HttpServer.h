@@ -17,9 +17,6 @@ public:
     HttpServer(net::io_context& io_context, tcp::endpoint endpoint,std::shared_ptr<Router>router);
     void run();
 
-
-
-
 private:
 
 	void doAccept();
