@@ -22,7 +22,7 @@ void CreateUserHandler::handle(Request& request)
 
 void CreateUserHandler::createUser(Request& request)
 {
-	std::string passwordHash = Hash::hash(request.password_);
+	std::string passwordHash = Hash::hashPassword(request.password_);
 	auto userPtr = std::make_shared<User>();
 	userPtr->setLogin(request.login_);
 	userPtr->setEmail(request.email_);

@@ -20,9 +20,9 @@ std::string ResponseBuilder::buildResponse(const Request& request)
 		};
 	}
 
-	if(!request.jwtToken_.empty())
+	if(!request.refresh_token_.empty())
 	{
-		json["jwtToken"] = request.jwtToken_;
+		json["jwtToken"] = request.refresh_token_;
 	}
 
 	return json.dump();

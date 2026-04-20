@@ -2,8 +2,10 @@
 #define CREATESESSIONHANDLER_H
 #include "Handler.h"
 #include "Request.h"
+#include "Hash.h"
 #include "UserRepository.h"
 #include <string>
+#include <stduuid/uuid.h>
 #include <jwt-cpp/jwt.h>
 #include <chrono>
 #include <memory>
@@ -16,8 +18,10 @@ public:
 	void handle(Request& request) override;
 
 private:
+
 	std::string jwtSecret_;
 	std::shared_ptr<UserRepository> repo_;
+	std::string generate();
 	std::string generateJwtToken(const std::string& userId);
 	bool saveSessionToDatabase(const std::string& userId, const std::string& token, int lifetimeSeconds);
 };

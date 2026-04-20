@@ -70,7 +70,7 @@ void AuthService::login(std::string login, std::string password)
 
 	if (loginRequest.success_)
 	{
-		std::cout << "Login success! JWT: " << loginRequest.jwtToken_ << std::endl;
+		std::cout << "Login success! JWT: " << loginRequest.refresh_token_ << std::endl;
 	}
 	else
 	{

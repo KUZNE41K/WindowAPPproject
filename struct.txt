@@ -67,3 +67,7 @@ Invoke-RestMethod -Uri "http://localhost:8080/login" `
     -Method Post `
     -Body $body `
     -ContentType "application/json"
+
+
+    далее:
+    генерация jwt(userId, 15 min) отправка в json jwt + refresh_token БЕЗ ХЕША 

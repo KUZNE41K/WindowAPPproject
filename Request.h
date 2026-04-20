@@ -22,24 +22,24 @@ public:
 	bool success_ = false;
 	std::string errorMessage_;
 	std::shared_ptr<User> user_;
-	std::string jwtToken_; 
+	std::string refresh_token_; 
 
 
 	Request()
 		: login_(""), email_(""), password_(""),
 		salt_(""), success_(false), errorMessage_(""),
-		user_(nullptr), jwtToken_("") {
+		user_(nullptr), refresh_token_("") {
 	} 
 	// конструктор по умолчанию, который инициализирует все поля пустыми строками, устанавливает флаг успеха в false, а указатель на пользователя в nullptr.
 
 	Request( const std::string& login,
 		const std::string& email,
 		const std::string& password
-		) : login_(login), email_(email), password_(password),success_(false),errorMessage_(""),user_(nullptr),jwtToken_("") {
+		) : login_(login), email_(email), password_(password),success_(false),errorMessage_(""),user_(nullptr), refresh_token_("") {
 	}
 	// конструктор, который принимает логин, электронную почту и пароль в качестве аргументов и инициализирует соответствующие поля. Остальные поля устанавливаются по умолчанию.
 	Request(const std::string& login, const std::string& password)
-    : login_(login), password_(password), success_(false), errorMessage_(""), user_(nullptr), jwtToken_("") {
+    : login_(login), password_(password), success_(false), errorMessage_(""), user_(nullptr), refresh_token_("") {
 	}
 	
 	~Request() = default;

@@ -7,21 +7,48 @@ CreateSessionHandler::CreateSessionHandler( std::shared_ptr<UserRepository> repo
 
 void CreateSessionHandler::handle(Request& request)
 {
-	if (!request.user_->isValid())
-	{
-		request.setSuccess(false);
-		request.setErrorMessage("User not found for session creation.");
-		return;
-	}
-	int lifetimeSeconds = 3600; // 1 hour, можно сделать параметром метода или константой
-	std::string token = generateJwtToken(std::to_string(request.user_->getId()));
-	saveSessionToDatabase(std::to_string(request.user_->getId()), token, lifetimeSeconds);// lifetimeSeconds добавить как параметр метода или использовать константное значение
-	request.jwtToken_ = token;
-	request.setSuccess(true);
-	if (next_)
-	{
-		next_->handle(request);
-	}
+    if (!request.user_->isValid()) {
+        request.setSuccess(false);
+        request.setErrorMessage("User not found for session creation.");
+        return;
+    }
+
+    int lifetimeSeconds = 2592000; // 30 дней
+
+    // Генерируем refresh token (UUID)
+    std::string rawToken = generate();  // Оригинальный UUID
+    request.refresh_token_ = rawToken;   // Отдаем клиенту оригинал
+
+    
+    std::string hashedToken = Hash::hashToken(rawToken);
+
+    
+    bool saved = repo_->saveSession(
+        std::to_string(request.user_->getId()),
+        hashedToken,  // Хеш, а не rawToken
+        lifetimeSeconds
+    );
+
+    if (!saved) {
+        request.setSuccess(false);
+        request.setErrorMessage("Failed to save session");
+        return;
+    }
+
+    request.setSuccess(true);
+
+    if (next_) {
+        next_->handle(request);
+    }
+}
+
+std::string CreateSessionHandler::generate()
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    uuids::uuid_random_generator uuid_gen(gen);
+    uuids::uuid id = uuid_gen();
+    return uuids::to_string(id);
 }
 
 std::string CreateSessionHandler::generateJwtToken(const std::string& userId)

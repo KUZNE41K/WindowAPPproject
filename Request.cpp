@@ -22,8 +22,8 @@ std::shared_ptr<User> Request::getUser() const
 	return user_;
 }
 
-void Request::setSessionToken(const std::string& jwtToken)
+void Request::setSessionToken(const std::string& refresh_token)
 {
-	jwtToken_ = jwtToken;
+	refresh_token_ = refresh_token;
 }
 
