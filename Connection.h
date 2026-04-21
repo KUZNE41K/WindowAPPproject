@@ -2,13 +2,14 @@
 
 #include <pqxx/pqxx>
 #include <iostream>
+#include <memory>
 
 
 
 class Connections
 {
 private:
-	std::unique_ptr<pqxx::connection> connection_;
+	std::shared_ptr<pqxx::connection> connection_;
 	std::string connection_string_;
 	void loadConnectionString();
 public:

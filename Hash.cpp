@@ -13,10 +13,19 @@ static std::vector<uint8_t> generateSalt(size_t size = 16)
 
 
 
-std::string Hash::hash(const std::string& password)
+std::string Hash::hashPassword(const std::string& password)
 {
-	uint32_t t_cost = 3; // Time cost
-	uint32_t m_cost = 1 << 16; // Memory cost (64 MB)
+	return hash(password, 3, 1 << 16);
+}
+
+std::string Hash::hashToken(const std::string& token)
+{
+	return hash(token, 2, 1 << 14);
+}
+
+std::string Hash::hash(const std::string& inpuit,uint32_t t_cost,uint32_t m_cost)
+{
+	 
 	uint32_t parallelism = 1; // Parallelism
 
 	std::vector<uint8_t> salt = generateSalt();
@@ -25,8 +34,8 @@ std::string Hash::hash(const std::string& password)
 	int result = argon2id_hash_encoded(t_cost,
 		m_cost,
 		parallelism,
-		password.c_str(),
-		password.size(),
+		inpuit.c_str(),
+		inpuit.size(),
 		salt.data(),
 		salt.size(),
 		32,

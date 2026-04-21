@@ -14,49 +14,64 @@ AuthService::AuthService(std::shared_ptr<UserRepository> userRepository): userRe
 }
 
 
-void AuthService::registerUser(std::string user,std::string email, std::string password)
+bool AuthService::registerUser(std::string user, std::string email, std::string password)
 {
-	auto db = std::make_shared<Connections>();
-	db->connectDataBase();
+    std::cout << "=== AuthService::registerUser ===" << std::endl;
+    std::cout << "User: " << user << std::endl;
+    std::cout << "Email: " << email << std::endl;
 
-	auto userRepo = std::make_shared<UserRepository>(db);
+    // Используем существующий userRepository_, а не создаем новый!
+    if (!userRepository_) {
+        std::cout << "ERROR: userRepository_ is null!" << std::endl;
+        return false;
+    }
 
-	// рега
-	auto registrationValidation = std::make_shared<ValidationHandler>();
-	auto regFetch = std::make_shared<UserFetchHandler>(userRepo);
-	auto regNotExists = std::make_shared<UserNotExistsHandler>();
-	auto createUser = std::make_shared<CreateUserHandler>(userRepo);
+    std::cout << "Using existing userRepository_" << std::endl;
 
+    // Создаем хендлеры с существующим репозиторием
+    auto registrationValidation = std::make_shared<ValidationHandler>();
+    auto regFetch = std::make_shared<UserFetchHandler>(userRepository_);
+    auto regNotExists = std::make_shared<UserNotExistsHandler>();
+    auto createUser = std::make_shared<CreateUserHandler>(userRepository_);
 
-	registrationValidation->setNext(regFetch);
-	regFetch->setNext(regNotExists);
-	regNotExists->setNext(createUser);
+    registrationValidation->setNext(regFetch);
+    regFetch->setNext(regNotExists);
+    regNotExists->setNext(createUser);
 
-	Request reqistrationRequest(user, email, password);
-	registrationValidation->handle(reqistrationRequest);
+    Request registrationRequest(user, email, password);
+    registrationValidation->handle(registrationRequest);
 
-	if (reqistrationRequest.success_)
-	{
-		std::cout << "User registered successfully!" << std::endl;
-	}
-	else
-	{
-		std::cout << "Registration failed: " << reqistrationRequest.errorMessage_ << std::endl;
-	}
+    std::cout << "After chain - success: " << registrationRequest.success_ << std::endl;
+    std::cout << "After chain - errorMessage: " << registrationRequest.errorMessage_ << std::endl;
+
+    if (registrationRequest.success_)
+    {
+        std::cout << "User registered successfully!" << std::endl;
+        return true;
+    }
+    else
+    {
+        std::cout << "Registration failed: " << registrationRequest.errorMessage_ << std::endl;
+        return false;
+    }
 }
 
-void AuthService::login(std::string login, std::string password)
+AuthService::LoginResult AuthService::login(std::string login, std::string password)
 {
-	auto db = std::make_shared<Connections>();
-	db->connectDataBase();
+	LoginResult result;
+	result.success = false;
 
-	auto userRepo = std::make_shared<UserRepository>(db);
+	if (!userRepository_) {
+		std::cout << "UserRepository is null!" << std::endl;
+		return result;
+	}
+
 
 	auto loginValidation = std::make_shared<ValidationHandler>();
-	auto loginFetch = std::make_shared<UserFetchHandler>(userRepo);
+	auto loginFetch = std::make_shared<UserFetchHandler>(userRepository_);
 	auto loginExists = std::make_shared<UserExistsHandler>();
 	auto passwordCheck = std::make_shared<PasswordCheckHandler>();
-	auto createSession = std::make_shared<CreateSessionHandler>(userRepo); // генерирует JWT и сохраняет в БД
+	auto createSession = std::make_shared<CreateSessionHandler>(userRepository_); // генерирует JWT и сохраняет в БД
 
 	loginValidation->setNext(loginFetch);
 	loginFetch->setNext(loginExists);
@@ -70,10 +85,16 @@ void AuthService::login(std::string login, std::string password)
 
 	if (loginRequest.success_)
 	{
-		std::cout << "Login success! JWT: " << loginRequest.jwtToken_ << std::endl;
+		result.success = true;
+		result.accessToken = loginRequest.jwtToken_;
+		result.refreshToken = loginRequest.refresh_token_;
+
+		std::cout << "Login success! JWT: " << loginRequest.refresh_token_ << std::endl;
 	}
 	else
 	{
+		result.errorMessage = loginRequest.errorMessage_;
 		std::cout << "Login failed: " << loginRequest.errorMessage_ << std::endl;
 	}
+	return result;
 }

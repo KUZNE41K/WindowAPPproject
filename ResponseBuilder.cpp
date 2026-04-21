@@ -2,6 +2,14 @@
 
 std::string ResponseBuilder::buildResponse(const Request& request)
 {
+	if (!request.responseBody_.empty())
+	{
+
+		return request.responseBody_;
+	}
+
+
+
 	nlohmann::json json;
 
 	json["success"] = request.success_;
@@ -20,7 +28,11 @@ std::string ResponseBuilder::buildResponse(const Request& request)
 		};
 	}
 
-	if(!request.jwtToken_.empty())
+	if (!request.refresh_token_.empty())
+	{
+		json["refresh_token"] = request.refresh_token_;
+	}
+	if (!request.jwtToken_.empty())
 	{
 		json["jwtToken"] = request.jwtToken_;
 	}
