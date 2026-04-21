@@ -45,9 +45,9 @@ project/
 
     $body = @{
     type     = "register"
-    login    = "testuser"
-    email    = "user@example.com"
-    password = "securePass123"
+    login    = "testuser23"
+    email    = "user@ex23ample.com"
+    password = "secureP23ass123"
 } | ConvertTo-Json
 
 Invoke-RestMethod -Uri "http://localhost:8080/register" `

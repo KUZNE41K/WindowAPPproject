@@ -29,6 +29,8 @@ void UserFetchHandler::handle(Request& request)
 		return;
 	}
 	request.setUser(user);
+	request.success_ = true;
+	request.setErrorMessage("");
 
 	if (next_)
 	{

@@ -22,6 +22,9 @@ void CreateSessionHandler::handle(Request& request)
     
     std::string hashedToken = Hash::hashToken(rawToken);
 
+    std::string accessToken = generateJwtToken(std::to_string(request.user_->getId()));
+    request.jwtToken_ = accessToken;
+
     
     bool saved = repo_->saveSession(
         std::to_string(request.user_->getId()),
@@ -54,7 +57,7 @@ std::string CreateSessionHandler::generate()
 std::string CreateSessionHandler::generateJwtToken(const std::string& userId)
 {
 	auto now = std::chrono::system_clock::now();
-	auto expires = now + std::chrono::hours(1); // Token valid for 1 hour
+	auto expires = now + std::chrono::minutes(15); // Token valid for 15 minutes
 
 	auto token = jwt::create()
 		.set_issuer("MyApp")

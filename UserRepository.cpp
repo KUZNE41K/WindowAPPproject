@@ -30,7 +30,11 @@ std::shared_ptr<User> UserRepository::findUserByField(const std::string& field, 
 			);
 			return user;
 		}
-		return nullptr;
+		else
+		{
+			return nullptr;
+		}
+		
 
 
 	}

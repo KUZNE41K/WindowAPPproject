@@ -21,7 +21,7 @@ bool Connections::connectDataBase()
 {
 	try {
 
-		connection_ = std::make_unique<pqxx::connection>(connection_string_);
+		connection_ = std::make_shared<pqxx::connection>(connection_string_);
 		if (connection_->is_open()) {
 			std::cout << "Opened database successfully: " << connection_->dbname() << std::endl;
 			return true;

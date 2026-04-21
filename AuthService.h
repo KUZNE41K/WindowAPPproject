@@ -11,8 +11,18 @@ class AuthService
 public:
 	AuthService(std::shared_ptr<UserRepository> repo);
 
-	void login(std::string login,std::string password);
-	void registerUser(std::string user,std::string email, std::string password);
+	struct LoginResult
+	{
+		bool success;
+		std::string accessToken;
+		std::string refreshToken;
+		std::string errorMessage;
+	};
+
+
+
+	LoginResult login(std::string login,std::string password);
+	bool registerUser(std::string user,std::string email, std::string password);
 private:
 	std::shared_ptr<UserRepository> userRepository_;
 

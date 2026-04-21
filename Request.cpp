@@ -2,13 +2,12 @@
 
 void Request::setSuccess(bool success)
 {
-	success_ = false;
+	success_ = success;
 	errorMessage_ = "";
 }
 
 void Request::setErrorMessage(const std::string& errorMessage)
 {
-	success_ = false;
 	errorMessage_ = errorMessage;
 }
 

@@ -8,6 +8,8 @@ void UserNotExistsHandler::handle(Request& request)
 		request.setErrorMessage("User already exists.");
 		return;
 	}
+	request.success_ = true;
+	request.setErrorMessage("");
 	if(next_ != nullptr)
 	{
 		next_->handle(request);
