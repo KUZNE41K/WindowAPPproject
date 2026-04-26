@@ -184,6 +184,7 @@
     <ClInclude Include="Hash.h" />
     <ClInclude Include="Hash1.h" />
     <ClInclude Include="HttpServer.h" />
+    <ClInclude Include="Listener.h" />
     <ClInclude Include="PasswordCheckHandler.h" />
     <ClInclude Include="ReadeKey.h" />
     <ClInclude Include="Request.h" />
@@ -191,12 +192,14 @@
     <ClInclude Include="ResponseBuilder.h" />
     <ClInclude Include="Router.h" />
     <ClInclude Include="Session.h" />
+    <ClInclude Include="SharedState.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserExistsHandler.h" />
     <ClInclude Include="UserFetchHandler.h" />
     <ClInclude Include="UserNotExistsHandler.h" />
     <ClInclude Include="UserRepository.h" />
     <ClInclude Include="ValidationHandler.h" />
+    <ClInclude Include="WebSocketSession.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="struct.txt" />

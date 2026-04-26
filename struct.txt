@@ -70,4 +70,6 @@ Invoke-RestMethod -Uri "http://localhost:8080/login" `
 
 
     далее:
-    генерация jwt(userId, 15 min) отправка в json jwt + refresh_token БЕЗ ХЕША 
+    https://chat.deepseek.com/share/unn9h9brlzjb4xmh0f
+    
+    1 этап
