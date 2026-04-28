@@ -70,6 +70,6 @@ Invoke-RestMethod -Uri "http://localhost:8080/login" `
 
 
     далее:
-    https://chat.deepseek.com/share/unn9h9brlzjb4xmh0f
+    https://chat.deepseek.com/share/fyi6vakcth1iaptqzm
     
-    1 этап
+    2 этап

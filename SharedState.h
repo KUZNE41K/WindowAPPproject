@@ -1,15 +1,17 @@
 #ifndef SHAREDSTATE_H
 #define SHAREDSTATE_H
-#include <string>
 #include <memory>
 #include <mutex>
-#include <unordered_set>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 class WebSocketSession;
 
 class SharedState
 {
 public:
+
 	explicit SharedState(std::string docRoot);
 	~SharedState() = default;
 
@@ -18,23 +20,34 @@ public:
 	SharedState(const SharedState&&) = delete;
 	SharedState& operator=(const SharedState&&) = delete;
 
-	void join(std::shared_ptr<WebSocketSession> webSocketSession);
+	void join(const std::string& sessionId,std::shared_ptr<WebSocketSession> sessions);
+	void leave(const std::string& sessionId);
 
-	void leave(std::shared_ptr<WebSocketSession>webSocketSession);
-	
+	void bindUser(const std::string& sessionId, const std::string& userId);
+
 	void broadcast(const std::string& message);
+	bool sendMessageToSession(const std::string& sessionId, const std::string& message);
+	bool sendMessageToUser(const std::string& userId, const std::string& message);
 
-	void getDocRoot()const;
+	bool isOnline(const std::string& userId) const;
+	std::vector<std::string> getOnlineUsers() const;
 
-
+	const std::string& getDocRoot()const { return docRoot_; }
 
 private:
+	struct SessionData
+	{
+		std::weak_ptr<WebSocketSession> session;
+		std::string userId;
+	};
 	void cleanupDeadSession();
 
 	std::string docRoot_;
-	std::mutex mutex_;
+	mutable std::mutex mutex_;
 
-	std::unordered_set<std::weak_ptr<WebSocketSession>> sessions_;
+	std::unordered_map<std::string, SessionData> sessions_;
+	std::unordered_map<std::string, std::string> userToSessions_;
+
 };
 
 
