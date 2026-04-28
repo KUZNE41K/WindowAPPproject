@@ -167,6 +167,7 @@
     <ClCompile Include="ResponseBuilder.cpp" />
     <ClCompile Include="Router.cpp" />
     <ClCompile Include="Session.cpp" />
+    <ClCompile Include="SharedState.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserExistsHandler.cpp" />
     <ClCompile Include="UserFetchHandler.cpp" />
