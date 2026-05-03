@@ -14,16 +14,19 @@ class CreateSessionHandler : public Handler
 {
 public:
 	explicit CreateSessionHandler(std::shared_ptr<UserRepository> repo);
+	explicit CreateSessionHandler();
 
 	void handle(Request& request) override;
 
+	static std::string generate();
+	std::string generateJwtToken(const std::string& userId);
+
 private:
 
-	std::string jwtSecret_;
+	std::string jwtSecret_ = "JWT_SECRET_KEY";
 	std::shared_ptr<UserRepository> repo_;
-	std::string generate();
-	std::string generateJwtToken(const std::string& userId);
-	bool saveSessionToDatabase(const std::string& userId, const std::string& token, int lifetimeSeconds);
+	
+	bool saveSessionToDatabase(const std::string& userId, const std::string& refreshToken, const std::string& parentTokenHash, int lifetimeSeconds);
 };
 
 

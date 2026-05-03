@@ -13,6 +13,7 @@ class SharedState
 public:
 
 	explicit SharedState(std::string docRoot);
+	SharedState() = delete;
 	~SharedState() = default;
 
 	SharedState(const SharedState&) = delete;
@@ -33,7 +34,7 @@ public:
 	std::vector<std::string> getOnlineUsers() const;
 
 	const std::string& getDocRoot()const { return docRoot_; }
-
+	const std::string& getJwtKey() const { return jwtKey_; }
 private:
 	struct SessionData
 	{
@@ -44,7 +45,7 @@ private:
 
 	std::string docRoot_;
 	mutable std::mutex mutex_;
-
+	const std::string jwtKey_ = "jwtSecret_";// временно в переменной далее в конфиге
 	std::unordered_map<std::string, SessionData> sessions_;
 	std::unordered_map<std::string, std::string> userToSessions_;
 

@@ -5,8 +5,13 @@ CreateSessionHandler::CreateSessionHandler( std::shared_ptr<UserRepository> repo
 {
 }
 
+CreateSessionHandler::CreateSessionHandler()
+{
+}
+
 void CreateSessionHandler::handle(Request& request)
 {
+    auto parentTokenHash = "";
     if (!request.user_->isValid()) {
         request.setSuccess(false);
         request.setErrorMessage("User not found for session creation.");
@@ -29,6 +34,7 @@ void CreateSessionHandler::handle(Request& request)
     bool saved = repo_->saveSession(
         std::to_string(request.user_->getId()),
         hashedToken,  // ’еш, а не rawToken
+        parentTokenHash,
         lifetimeSeconds
     );
 
@@ -68,7 +74,7 @@ std::string CreateSessionHandler::generateJwtToken(const std::string& userId)
 	return token;
 }
 
-bool CreateSessionHandler::saveSessionToDatabase(const std::string& userId, const std::string& token, int lifetimeSeconds)
+bool CreateSessionHandler::saveSessionToDatabase(const std::string& userId, const std::string& token, const std::string& parentTokenHash, int lifetimeSeconds)
 {
-    return repo_->saveSession(userId, token, lifetimeSeconds);
+    return repo_->saveSession(userId, token, parentTokenHash, lifetimeSeconds);
 }

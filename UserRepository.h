@@ -7,6 +7,18 @@
 #include <string>
 #include <chrono>
 
+struct SessionInfo {
+	int id;
+	std::string userId;
+	std::string tokenHash;
+	std::string issuedAt;
+	std::string expiresAt;
+	bool used;
+	std::string parentTokenHash;
+	bool revoked;
+	std::string createdAt;
+};
+
 class UserRepository
 {
 private:
@@ -15,6 +27,8 @@ private:
 
 	std::shared_ptr<User> findUserByField(const std::string& field, const std::string& value);
 
+	
+
 
 public:
 	UserRepository(std::shared_ptr<Connections> conn);
@@ -22,7 +36,10 @@ public:
 	std::shared_ptr<User> findUserByEmail(const std::string& email);
 	bool saveUser(std::shared_ptr<User>user);
 	bool updateUser();// потом
-	bool saveSession(const std::string& userId, const std::string& token, int lifetimeSeconds);
+	bool saveSession(const std::string& userId, const std::string& token, const std::string& parentTokenHash, int lifetimeSeconds);
+	bool rotateRefreshToken(const std::string& userId,const std::string& oldRefreshToken, const std::string& newRefreshToken,int lifetimeSeconds);
+	std::optional<SessionInfo> findSessionByToken(const std::string& token);
+	std::optional<SessionInfo> findSessionByTokenHash(const std::string& tokenHash);
 
 
 };
