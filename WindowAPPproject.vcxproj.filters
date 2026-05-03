@@ -46,6 +46,9 @@
     <Filter Include="Header Files\Jwt">
       <UniqueIdentifier>{0d522543-611c-4c12-a6d1-228c97fae692}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\WebSocket">
+      <UniqueIdentifier>{7502d1db-8602-4f68-8f3f-fc84ee856f98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +107,21 @@
     </ClCompile>
     <ClCompile Include="HttpServer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SharedState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WebSocketSession.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JwtValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sha256.c">
+      <Filter>Header Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +193,18 @@
     </ClInclude>
     <ClInclude Include="HttpServer.h">
       <Filter>Header Files\server</Filter>
+    </ClInclude>
+    <ClInclude Include="Listener.h">
+      <Filter>Header Files\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="WebSocketSession.h">
+      <Filter>Header Files\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedState.h">
+      <Filter>Header Files\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="sha256.h">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

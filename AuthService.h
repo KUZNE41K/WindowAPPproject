@@ -19,10 +19,21 @@ public:
 		std::string errorMessage;
 	};
 
+	struct TokenValidationResult {
+		bool isValid = false;
+		std::string userId;
+		std::string accessToken;
+		std::string refreshToken;
+		std::string errorMessage;
+	};
 
 
 	LoginResult login(std::string login,std::string password);
 	bool registerUser(std::string user,std::string email, std::string password);
+	TokenValidationResult validateToken(const std::string& accessToken,const std::string& refreshToken);
+
+	std::string extractUserIdFromToken(const std::string& accessToken);
+	std::string jwtSecret_ = "JWT_SECRET_KEY";
 private:
 	std::shared_ptr<UserRepository> userRepository_;
 

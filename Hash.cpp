@@ -1,4 +1,5 @@
 #include "Hash.h"
+#include "sha256.h"
 
 static std::vector<uint8_t> generateSalt(size_t size = 16)
 {
@@ -20,7 +21,8 @@ std::string Hash::hashPassword(const std::string& password)
 
 std::string Hash::hashToken(const std::string& token)
 {
-	return hash(token, 2, 1 << 14);
+	std::string hashedToken = SHA256::hashString(token);
+	return hashedToken;
 }
 
 std::string Hash::hash(const std::string& inpuit,uint32_t t_cost,uint32_t m_cost)

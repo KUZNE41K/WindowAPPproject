@@ -32,6 +32,13 @@ std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
             request->setSuccess(true);
             std::cout << "Login request for: " << request->login_ << std::endl;
         }
+        else if(type == "refresh")
+        {
+			request->refresh_token_ = json.value("refreshToken", "");
+			request->jwtToken_ = json.value("accessToken", "");
+			request->setSuccess(true);
+			return request;
+        }
         else
         {
             std::cout << "Unknown type: '" << type << "'" << std::endl;

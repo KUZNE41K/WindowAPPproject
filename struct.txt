@@ -69,5 +69,21 @@ Invoke-RestMethod -Uri "http://localhost:8080/login" `
     -ContentType "application/json"
 
 
+    $body = @{
+    type     = "refresh"
+    refreshToken   = "bf26900e-d8df-403b-a902-609157edb1b4"
+    accessToken    = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Nzc4MzQ1MDQsImlhdCI6MTc3NzgzMzYwNCwiaXNzIjoiTXlBcHAiLCJzdWIiOiI1MyJ9.v9ng_rwD_Ag94SsU8vNEppcMPhWTbN54B-O1y1WGHg8"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/refreshToken" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
+
+
     далее:
-    генерация jwt(userId, 15 min) отправка в json jwt + refresh_token БЕЗ ХЕША 
+    https://chat.deepseek.com/share/fyi6vakcth1iaptqzm
+    
+
+
+    2 этап

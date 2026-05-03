@@ -1,4 +1,5 @@
 #include "UserRepository.h"
+#include "Hash.h"
 
 std::string UserRepository::buildSelectQuery(const std::string& table, const std::string& condition)
 {
@@ -86,8 +87,14 @@ bool UserRepository::updateUser()// потом
 	return false;
 }
 
-bool UserRepository::saveSession(const std::string& userId, const std::string& token, int lifetimeSeconds)
+bool UserRepository::saveSession(const std::string& userId, const std::string& refreshToken, const std::string& parentTokenHash, int lifetimeSeconds)
 {
+
+	if (userId.empty() || refreshToken.empty() || lifetimeSeconds <= 0 )
+	{
+		std::cerr << "Invalid input parameters for saveSession." << std::endl;
+		return false;
+	}
 	try {
 		pqxx::work txn(connection_->getConnection());
 
@@ -103,23 +110,119 @@ bool UserRepository::saveSession(const std::string& userId, const std::string& t
 		std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &expires_tm);
 		std::string expires_at_str(buffer);
 
-		txn.exec(
-			"INSERT INTO sessions (user_id, token, issued_at, expires_at, revoked) "
-			"VALUES ($1, $2, NOW(), $3, FALSE) "
-			"ON CONFLICT (token) DO UPDATE SET "
-			"user_id = EXCLUDED.user_id, "
-			"issued_at = EXCLUDED.issued_at, "
-			"expires_at = EXCLUDED.expires_at, "
-			"revoked = FALSE;",
-			pqxx::params{userId, token, expires_at_str}
-		);
-		txn.commit();
-		return true;
+		if (parentTokenHash.empty())
+		{
+			txn.exec(
+				"INSERT INTO sessions1 (user_id, token_hash, issued_at, expires_at, revoked) "
+				"VALUES ($1, $2, NOW(), $3, FALSE) ",
+				pqxx::params{ userId, refreshToken, expires_at_str }
+			);
+			txn.commit();
+			return true;
+		}
+		else
+		{
+			txn.exec(
+				"INSERT INTO sessions1 (user_id, token_hash, parent_token_hash, issued_at, expires_at, revoked) "
+				"VALUES ($1, $2, $3, NOW(), $4, FALSE) ",
+				pqxx::params{ userId, refreshToken, parentTokenHash, expires_at_str }
+			);
+			txn.commit();
+			return true;
+		}
+		
 
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in saveSession: " << e.what() << std::endl;
 		return false;
+	}
+}
+
+bool UserRepository::rotateRefreshToken(const std::string& userId, const std::string& oldRefreshToken, const std::string& newRefreshToken, int lifetimeSeconds)
+{
+	try 
+	{
+		pqxx::work txn(connection_->getConnection());
+
+		txn.exec(
+			"UPDATE sessions1 SET revoked = TRUE "
+			"WHERE token_hash = $1 AND user_id = $2 ",
+			pqxx::params{ Hash::hashToken(oldRefreshToken), userId }
+		);
+		txn.commit();
+		return saveSession(userId, newRefreshToken, oldRefreshToken, lifetimeSeconds);
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error in rotateRefreshToken: " << e.what() << std::endl;
+		return false;
+	}
+
+
+	
+}
+
+std::optional<SessionInfo> UserRepository::findSessionByToken(const std::string& token)
+{
+	try
+	{
+		std::string tokenHash = Hash::hashToken(token);
+		std::cout << tokenHash << "=== token hash ===" << std::endl;
+		return findSessionByTokenHash(tokenHash);
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error in findSessionByToken: " << e.what() << std::endl;
+		return std::nullopt;
+	}
+	
+}
+
+std::optional<SessionInfo> UserRepository::findSessionByTokenHash(const std::string& tokenHash)
+{
+	try
+	{
+		pqxx::work txn(connection_->getConnection());
+		pqxx::result result = txn.exec(
+			"SELECT id, user_id, token_hash, issued_at, expires_at, "
+			"used, parent_token_hash, revoked, created_at "
+			"FROM sessions1 WHERE token_hash = $1 "
+			"AND revoked = false "
+			"AND expires_at > NOW() ",
+			pqxx::params{ tokenHash }
+		);
+		
+
+		if (result.empty())
+		{
+			return std::nullopt;
+		}
+		else
+		{
+			SessionInfo sessionInfo;
+
+			sessionInfo.id = result[0][0].as<int>();
+			sessionInfo.userId = result[0][1].as<std::string>();
+			sessionInfo.tokenHash = result[0][2].as<std::string>();
+			sessionInfo.issuedAt = result[0][3].as<std::string>();
+			sessionInfo.expiresAt = result[0][4].as<std::string>();
+			sessionInfo.used = result[0][5].as<bool>();
+			if(!result[0][6].is_null())
+			{
+				sessionInfo.parentTokenHash = result[0][6].as<std::string>();
+			}
+			sessionInfo.revoked = result[0][7].as<bool>();
+			sessionInfo.createdAt = result[0][8].as<std::string>();
+			return sessionInfo;
+
+		}
+		txn.commit();
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error in findSessionByTokenHash: " << e.what() << std::endl;
+		return std::nullopt;
 	}
 }

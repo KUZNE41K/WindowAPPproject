@@ -1,6 +1,7 @@
 #include "Router.h"
+#include "AuthService.h"
 #include "RequestParser.h"
-#include <iostream>  //  Добавить
+#include <iostream>
 
 Router::Router(std::shared_ptr<AuthService> authService) : authService_(authService)
 {
@@ -8,7 +9,6 @@ Router::Router(std::shared_ptr<AuthService> authService) : authService_(authServ
 
 std::shared_ptr<Request> Router::route(const std::string& path, std::string& body)
 {
-    //  Добавить отладочный вывод
     std::cout << "=== Router::route ===" << std::endl;
     std::cout << "Path: " << path << std::endl;
     std::cout << "Body: " << body << std::endl;
@@ -82,6 +82,35 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
             errorJson["error"] = "Registration failed";
             request->responseBody_ = errorJson.dump();
             std::cout << "Registration failed" << std::endl;
+        }
+    }
+    else if (path == "/refreshToken")
+    {
+		auto refresh = authService_->validateToken(request->jwtToken_, request->refresh_token_);
+        if (refresh.isValid)
+        {
+			request->setSuccess(true);
+
+            request->jwtToken_ = refresh.accessToken;
+            request->refresh_token_ = refresh.refreshToken;
+
+			nlohmann::json responseJson;
+			responseJson["success"] = true;
+            responseJson["accessToken"] = request->jwtToken_;
+            responseJson["refreshToken"] = request->refresh_token_;
+            request->responseBody_ = responseJson.dump();
+			std::cout << "Token refresh success" << std::endl;
+
+        }
+        else
+        {
+			request->setSuccess(false);
+			request->setErrorMessage("Token refresh failed");
+			nlohmann::json errorJson;
+			errorJson["success"] = false;
+			errorJson["error"] = "Token refresh failed";
+			request->responseBody_ = errorJson.dump();
+			std::cout << "Token refresh failed" << std::endl;
         }
     }
     else
