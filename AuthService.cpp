@@ -121,7 +121,6 @@ AuthService::TokenValidationResult AuthService::validateToken(const std::string&
 	return result;
 }
 
-
 std::string AuthService::extractUserIdFromToken(const std::string& accessToken)
 {
     try {
@@ -159,7 +158,6 @@ std::string AuthService::extractUserIdFromToken(const std::string& accessToken)
         return "";
     }
 }
-
 
 AuthService::LoginResult AuthService::login(std::string login, std::string password)
 {
@@ -203,3 +201,6 @@ AuthService::LoginResult AuthService::login(std::string login, std::string passw
 	}
 	return result;
 }
+
+
+

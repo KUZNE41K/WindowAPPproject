@@ -5,8 +5,6 @@
 #include "User.h"
 
 
-
-
 class User;
 
 // Класс Request представляет собой структуру данных, которая содержит информацию о запросе на регистрацию или аутентификацию пользователя. 
@@ -26,12 +24,17 @@ public:
 	std::string jwtToken_;
 	std::string responseBody_;
 
+	// threads
+	std::string title_;
+	std::string uuid_;
+	std::string createdId_;
+
 
 	Request()
 		: login_(""), email_(""), password_(""),
 		salt_(""), success_(false), errorMessage_(""),
 		user_(nullptr), refresh_token_(""), jwtToken_("") {
-	} 
+	}
 	// конструктор по умолчанию, который инициализирует все поля пустыми строками, устанавливает флаг успеха в false, а указатель на пользователя в nullptr.
 
 	Request( const std::string& login,
@@ -42,6 +45,12 @@ public:
 	// конструктор, который принимает логин, электронную почту и пароль в качестве аргументов и инициализирует соответствующие поля. Остальные поля устанавливаются по умолчанию.
 	Request(const std::string& login, const std::string& password)
     : login_(login), password_(password), success_(false), errorMessage_(""), user_(nullptr), refresh_token_(""), jwtToken_("") {
+	}
+
+	// конструктор для веток
+	Request(const std::string& title, const std::string& uuid, const std::string& createdId,const std::string& errorMessage)
+		: title_(title), uuid_(uuid), createdId_(createdId),
+		success_(false), errorMessage_(errorMessage) {
 	}
 	
 	~Request() = default;

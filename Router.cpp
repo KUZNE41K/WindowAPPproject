@@ -3,7 +3,7 @@
 #include "RequestParser.h"
 #include <iostream>
 
-Router::Router(std::shared_ptr<AuthService> authService) : authService_(authService)
+Router::Router(std::shared_ptr<AuthService> authService, std::shared_ptr<ThreadController> threadController) : authService_(authService), threadController_(threadController)
 {
 }
 
@@ -15,7 +15,7 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
 
     auto request = RequestParser::parseRequest(body);
 
-    // Проверить результат парсинга
+    
     std::cout << "After parsing, success: " << request->success_ << std::endl;
     if (!request->success_) {
         std::cout << "Parse error: " << request->errorMessage_ << std::endl;
@@ -111,6 +111,33 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
 			errorJson["error"] = "Token refresh failed";
 			request->responseBody_ = errorJson.dump();
 			std::cout << "Token refresh failed" << std::endl;
+        }
+    }
+    else if (path == "/thread/create")
+    {
+        std::cout << "Processing /thread/create" << std::endl;
+
+        // Create a new thread
+        bool created = threadController_->createThread(request->title_, request->createdId_, request->uuid_);
+
+        if (created)
+        {
+            request->setSuccess(true);
+            nlohmann::json responseJson;
+            responseJson["success"] = true;
+            responseJson["message"] = "Thread created successfully!";
+            request->responseBody_ = responseJson.dump();
+            std::cout << "Thread creation success" << std::endl;
+        }
+        else
+        {
+            request->setSuccess(false);
+            request->setErrorMessage("Thread creation failed");
+            nlohmann::json errorJson;
+            errorJson["success"] = false;
+            errorJson["error"] = "Thread creation failed";
+            request->responseBody_ = errorJson.dump();
+            std::cout << "Thread creation failed" << std::endl;
         }
     }
     else

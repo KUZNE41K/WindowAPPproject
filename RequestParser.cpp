@@ -12,7 +12,6 @@ std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
     try {
         auto json = nlohmann::json::parse(body);
         
-        // Изменено: пустая строка вместо пробела
         std::string type = json.value("type", "");
         
         std::cout << "Type: '" << type << "'" << std::endl;
@@ -38,6 +37,27 @@ std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
 			request->jwtToken_ = json.value("accessToken", "");
 			request->setSuccess(true);
 			return request;
+        }
+        else if (type == "createThreads")
+        {
+			std::string title_ = json.value("title", "");
+            std::string uuid_ = json.value("uuid", "");
+            std::string createdId_ = json.value("createdId", "");
+			
+            std::string errorMessage;
+            if (!ThreadsValidator::validateCreate(title_, uuid_, createdId_, errorMessage))
+            {
+                request->setErrorMessage(errorMessage);
+				request->setSuccess(false);
+                return request;
+            }
+
+            request->title_ = title_;
+            request->uuid_ = uuid_;
+            request->createdId_ = createdId_;
+			request->setSuccess(true);
+			return request;
+			
         }
         else
         {
