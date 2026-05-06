@@ -19,7 +19,7 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
 
     auto request = RequestParser::parseRequest(body);
 
-    
+
     std::cout << "After parsing, success: " << request->success_ << std::endl;
     if (!request->success_) {
         std::cout << "Parse error: " << request->errorMessage_ << std::endl;
@@ -90,31 +90,31 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
     }
     else if (path == "/refreshToken")
     {
-		auto refresh = authService_->validateToken(request->jwtToken_, request->refresh_token_);
+        auto refresh = authService_->validateToken(request->jwtToken_, request->refresh_token_);
         if (refresh.isValid)
         {
-			request->setSuccess(true);
+            request->setSuccess(true);
 
             request->jwtToken_ = refresh.accessToken;
             request->refresh_token_ = refresh.refreshToken;
 
-			nlohmann::json responseJson;
-			responseJson["success"] = true;
+            nlohmann::json responseJson;
+            responseJson["success"] = true;
             responseJson["accessToken"] = request->jwtToken_;
             responseJson["refreshToken"] = request->refresh_token_;
             request->responseBody_ = responseJson.dump();
-			std::cout << "Token refresh success" << std::endl;
+            std::cout << "Token refresh success" << std::endl;
 
         }
         else
         {
-			request->setSuccess(false);
-			request->setErrorMessage("Token refresh failed");
-			nlohmann::json errorJson;
-			errorJson["success"] = false;
-			errorJson["error"] = "Token refresh failed";
-			request->responseBody_ = errorJson.dump();
-			std::cout << "Token refresh failed" << std::endl;
+            request->setSuccess(false);
+            request->setErrorMessage("Token refresh failed");
+            nlohmann::json errorJson;
+            errorJson["success"] = false;
+            errorJson["error"] = "Token refresh failed";
+            request->responseBody_ = errorJson.dump();
+            std::cout << "Token refresh failed" << std::endl;
         }
     }
     else if (path == "/thread/create")
@@ -142,6 +142,57 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
             errorJson["error"] = "Thread creation failed";
             request->responseBody_ = errorJson.dump();
             std::cout << "Thread creation failed" << std::endl;
+        }
+    }
+    else if (path == "/thread/delete")
+    {
+        std::cout << "Processing /thread/delete" << std::endl;
+
+        bool deleted = threadController_->deleteThread(request->threadId_);
+
+        if (deleted)
+        {
+            request->setSuccess(true);
+            nlohmann::json responseJson;
+            responseJson["success"] = true;
+            responseJson["message"] = "Thread deleted successfully!";
+            request->responseBody_ = responseJson.dump();
+            std::cout << "Thread deletion success" << std::endl;
+        }
+        else
+        {
+            request->setSuccess(false);
+            request->setErrorMessage("Thread deletion failed");
+            nlohmann::json errorJson;
+            errorJson["success"] = false;
+            errorJson["error"] = "Thread deletion failed";
+            request->responseBody_ = errorJson.dump();
+            std::cout << "Thread deletion failed" << std::endl;
+        }
+    }
+    else if (path == "/thread/rename")
+    {
+		std::cout << "Processing /thread/rename" << std::endl;
+
+		bool renamed = threadController_->updateTitleThread(request->threadId_,request->newTitle_);
+        if (renamed)
+        {
+            request->setSuccess(true);
+            nlohmann::json responseJson;
+            responseJson["success"] = true;
+            responseJson["message"] = "Thread renamed successfully!";
+            request->responseBody_ = responseJson.dump();
+            std::cout << "Thread renaming success" << std::endl;
+        }
+        else
+        {
+            request->setSuccess(false);
+            request->setErrorMessage("Thread renaming failed");
+            nlohmann::json errorJson;
+            errorJson["success"] = false;
+            errorJson["error"] = "Thread renaming failed";
+            request->responseBody_ = errorJson.dump();
+            std::cout << "Thread renaming failed" << std::endl;
         }
     }
     else

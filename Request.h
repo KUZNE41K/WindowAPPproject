@@ -28,6 +28,8 @@ public:
 	std::string title_;
 	std::string uuid_;
 	int createdId_;
+	std::string newTitle_;
+	std::string threadId_;
 
 
 	Request()
@@ -49,9 +51,17 @@ public:
 	}
 
 	// конструктор для веток
-	Request(const std::string& title, const std::string& uuid, int createdId)
-		: title_(title), uuid_(uuid), createdId_(createdId),
-		success_(false) {
+	Request(const std::string& title, const std::string& uuid, int& createdId)
+		: title_(title), uuid_(uuid), createdId_(createdId){
+	}
+	Request(const std::string& threadId)
+		: threadId_(threadId){
+	}
+	static Request ThreadRename(const std::string& threadId, const std::string& newTitle) {
+		Request request;
+		request.threadId_ = threadId;
+		request.newTitle_ = newTitle;
+		return request;
 	}
 	
 	~Request() = default;

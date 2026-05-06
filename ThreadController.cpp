@@ -1,14 +1,34 @@
 #include "ThreadController.h"
 #include "Connection.h"
-ThreadController::ThreadController(std::shared_ptr<ThreadRepository> userRepo) : threadsRepository_(userRepo)
+
+ThreadController::ThreadController(std::shared_ptr<ThreadRepository> threadsRepo) : threadsRepository_(threadsRepo)
 {
 }
-bool ThreadController::createThread(const std::string& title, int& createdId, const std::string& uuid)
+
+bool ThreadController::createThread(const std::string& title, int creatorId, const std::string& uuid)
 {
-	if (!threadsRepository_->userSearch(createdId))
+	// проверяем, существует ли пользователь-автор
+	if (!threadsRepository_->userSearch(creatorId))
 	{
 		return false;
 	}
-	threadsRepository_->createThread(title, createdId, uuid);
+	return threadsRepository_->createThread(title, creatorId, uuid);
+}
+
+bool ThreadController::deleteThread(const std::string& threadId)
+{
+	if (!threadsRepository_->deleteThread(threadId))
+	{
+		return false;
+	}
+	return true;
+}
+
+bool ThreadController::updateTitleThread(const std::string& threadId, const std::string& newTitle)
+{
+	if (!threadsRepository_->updateThread(threadId, newTitle))
+	{
+		return false;
+	}
 	return true;
 }

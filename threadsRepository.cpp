@@ -5,14 +5,14 @@ ThreadRepository::ThreadRepository(std::shared_ptr<Connections> conn)
 	connection_ = conn;
 }
 
-bool ThreadRepository::createThread(const std::string& title, const int& createdId, const std::string& uuid)
+bool ThreadRepository::createThread(const std::string& title, const int& creatorId, const std::string& uuid)
 {
 	try {
 		pqxx::work txn(connection_->getConnection());
 
 		txn.exec(
-			"INSERT INTO users (title, creatorId, uuid) VALUES ($1, $2, $3)",
-			pqxx::params{title, createdId, uuid}
+			"INSERT INTO threads (id, title, created_by) VALUES ($1, $2, $3)",
+			pqxx::params{uuid, title, creatorId}
 		);
 
 		txn.commit();
@@ -25,11 +25,25 @@ bool ThreadRepository::createThread(const std::string& title, const int& created
 	}
 }
 
-bool ThreadRepository::deleteThread(int& threadId)
+bool ThreadRepository::deleteThread(const std::string& threadId)
 {
 	try {
 		pqxx::work txn(connection_->getConnection());
 
+		// Сначала проверяем, существует ли ветка с таким id
+		pqxx::result checkResult = txn.exec(
+			"SELECT id FROM threads WHERE id = $1",
+			pqxx::params{ threadId }
+		);
+
+		// Если ветка не найдена — возвращаем false
+		if (checkResult.empty())
+		{
+			std::cerr << "Thread not found with id: " << threadId << std::endl;
+			return false;
+		}
+
+		// Ветка найдена, удаляем её
 		txn.exec(
 			"DELETE FROM threads WHERE id = $1",
 			pqxx::params{ threadId }
@@ -45,11 +59,25 @@ bool ThreadRepository::deleteThread(int& threadId)
 	}
 }
 
-bool ThreadRepository::updateThread(int& threadId, const std::string& newTitle)
+bool ThreadRepository::updateThread(const std::string& threadId, const std::string& newTitle)
 {
 	try {
 		pqxx::work txn(connection_->getConnection());
 
+		// Сначала проверяем, существует ли ветка
+		pqxx::result checkResult = txn.exec(
+			"SELECT id FROM threads WHERE id = $1",
+			pqxx::params{ threadId }
+		);
+
+		// Если ветка не найдена — возвращаем false
+		if (checkResult.empty())
+		{
+			std::cerr << "Thread not found with id: " << threadId << std::endl;
+			return false;
+		}
+
+		// Ветка найдена, обновляем её
 		txn.exec(
 			"UPDATE threads SET title = $1 WHERE id = $2",
 			pqxx::params{ newTitle, threadId }
@@ -65,13 +93,13 @@ bool ThreadRepository::updateThread(int& threadId, const std::string& newTitle)
 	}
 }
 
-bool ThreadRepository::userSearch(int& creatorId)
+bool ThreadRepository::userSearch(const int& creatorId)
 {
 	try
 	{
 		pqxx::work txn(connection_->getConnection());
 		pqxx::result result = txn.exec(
-			"SELECT id FROM users WHERE creatorId = $1",
+			"SELECT id FROM users WHERE id = $1",
 			pqxx::params{creatorId}
 		);
 		txn.commit();

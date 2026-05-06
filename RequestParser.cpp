@@ -59,6 +59,38 @@ std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
 			return request;
 			
         }
+        else if (type == "deleteThreads")
+        {
+            std::string threadId_ = json.value("threadId", "");
+
+            std::string errorMessage;
+            if (!ThreadsValidator::validateDelete(threadId_, errorMessage))
+            {
+                request->setErrorMessage(errorMessage);
+                request->setSuccess(false);
+                return request;
+            }
+            request->threadId_ = threadId_;
+            request->setSuccess(true);
+            return request;
+        }
+        else if (type == "renameThreads")
+        {
+            std::string threadId_ = json.value("threadId", "");
+            std::string newTitle_ = json.value("newTitle", "");
+
+            std::string errorMessage;
+            if (!ThreadsValidator::validateUpdateRename(threadId_, newTitle_, errorMessage))
+            {
+                request->setErrorMessage(errorMessage);
+                request->setSuccess(false);
+                return request;
+            }
+            request->threadId_ = threadId_;
+            request->newTitle_ = newTitle_;
+            request->setSuccess(true);
+            return request;
+        }
         else
         {
             std::cout << "Unknown type: '" << type << "'" << std::endl;

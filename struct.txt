@@ -56,7 +56,6 @@ Invoke-RestMethod -Uri "http://localhost:8080/register" `
     -ContentType "application/json"
 
 
-
     $body = @{
     type     = "login"
     login    = "testuser"
@@ -81,8 +80,42 @@ Invoke-RestMethod -Uri "http://localhost:8080/refreshToken" `
     -ContentType "application/json"
 
 
-    далее:
-    https://chat.deepseek.com/share/fyi6vakcth1iaptqzm
+    ветки
+
+    $body = @{
+    type     = "createThreads"
+    title    = "testuser23"
+    uuid     = "bf26900e-d8df-403b-a555-609157edb1b4"
+    createdId = 52
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/create" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
+
+
+    $body = @{
+    type     = "renameThreads"
+    newTitle = "NewTitle"
+    threadId = "bf26900e-d8df-403b-a555-609157edb1b4"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/rename" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
+
+
+    $body = @{
+    type     = "deleteThreads"
+    threadId = "bf26900e-d8df-403b-a555-609157edb1b4"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/delete" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
     
 
 
