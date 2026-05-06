@@ -10,10 +10,10 @@ class ThreadRepository
 {
 public:
 	ThreadRepository(std::shared_ptr<Connections> conn);
-	bool createThread(const std::string& title, const std::string& createdId, const std::string& uuid);
+	bool createThread(const std::string& title, const int& createdId, const std::string& uuid);
 	bool deleteThread(int& threadId);
 	bool updateThread(int& threadId, const std::string& newTitle);
-	bool userSearch(const std::string& creatorId);
+	bool userSearch(int& creatorId);
 
 private:
 	std::shared_ptr<Connections> connection_;

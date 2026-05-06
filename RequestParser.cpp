@@ -42,16 +42,16 @@ std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
         {
 			std::string title_ = json.value("title", "");
             std::string uuid_ = json.value("uuid", "");
-            std::string createdId_ = json.value("createdId", "");
+            int createdId_ = json.value("createdId", 0);
 			
             std::string errorMessage;
-            if (!ThreadsValidator::validateCreate(title_, uuid_, createdId_, errorMessage))
+            if (!ThreadsValidator::validateCreate(title_, uuid_, createdId_,errorMessage))
             {
                 request->setErrorMessage(errorMessage);
 				request->setSuccess(false);
                 return request;
             }
-
+            
             request->title_ = title_;
             request->uuid_ = uuid_;
             request->createdId_ = createdId_;

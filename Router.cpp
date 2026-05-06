@@ -3,7 +3,11 @@
 #include "RequestParser.h"
 #include <iostream>
 
-Router::Router(std::shared_ptr<AuthService> authService, std::shared_ptr<ThreadController> threadController) : authService_(authService), threadController_(threadController)
+Router::Router(
+    std::shared_ptr<AuthService> authService, 
+    std::shared_ptr<ThreadController> threadController) 
+    : authService_(authService), 
+    threadController_(threadController)
 {
 }
 

@@ -5,7 +5,7 @@ ThreadRepository::ThreadRepository(std::shared_ptr<Connections> conn)
 	connection_ = conn;
 }
 
-bool ThreadRepository::createThread(const std::string& title, const std::string& createdId, const std::string& uuid)
+bool ThreadRepository::createThread(const std::string& title, const int& createdId, const std::string& uuid)
 {
 	try {
 		pqxx::work txn(connection_->getConnection());
@@ -65,14 +65,14 @@ bool ThreadRepository::updateThread(int& threadId, const std::string& newTitle)
 	}
 }
 
-bool ThreadRepository::userSearch(const std::string& creatorId)
+bool ThreadRepository::userSearch(int& creatorId)
 {
 	try
 	{
 		pqxx::work txn(connection_->getConnection());
 		pqxx::result result = txn.exec(
 			"SELECT id FROM users WHERE creatorId = $1",
-			pqxx::params{ std::stoi(creatorId)}
+			pqxx::params{creatorId}
 		);
 		txn.commit();
 		return !result.empty();

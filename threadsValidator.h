@@ -4,7 +4,7 @@
 
 class ThreadsValidator {
 public:
-    static bool validateCreate(const std::string& title, const std::string& uuid, const std::string& createdId, std::string& errorMessage);
+    static bool validateCreate(const std::string& title, const std::string& uuid, int& createdId, std::string& errorMessage);
 };
 
 #endif // THREADSVALIDATOR_H

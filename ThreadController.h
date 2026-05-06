@@ -11,7 +11,7 @@ class ThreadController
 public:
 	ThreadController(std::shared_ptr<ThreadRepository> userRepo);
 
-	bool createThread(const std::string& title, const std::string& createdId, const std::string& uuid);
+	bool createThread(const std::string& title, int& createdId, const std::string& uuid);
 	bool deleteThread();
 	bool updateTitleThread();
 

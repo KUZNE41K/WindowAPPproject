@@ -27,7 +27,7 @@ public:
 	// threads
 	std::string title_;
 	std::string uuid_;
-	std::string createdId_;
+	int createdId_;
 
 
 	Request()
@@ -42,15 +42,16 @@ public:
 		const std::string& password
 		) : login_(login), email_(email), password_(password),success_(false),errorMessage_(""),user_(nullptr), refresh_token_("") {
 	}
-	// конструктор, который принимает логин, электронную почту и пароль в качестве аргументов и инициализирует соответствующие поля. Остальные поля устанавливаются по умолчанию.
+	// конструктор, который принимает логин, электронную почту и пароль в качестве аргументов
+	// и инициализирует соответствующие поля. Остальные поля устанавливаются по умолчанию.
 	Request(const std::string& login, const std::string& password)
     : login_(login), password_(password), success_(false), errorMessage_(""), user_(nullptr), refresh_token_(""), jwtToken_("") {
 	}
 
 	// конструктор для веток
-	Request(const std::string& title, const std::string& uuid, const std::string& createdId,const std::string& errorMessage)
+	Request(const std::string& title, const std::string& uuid, int createdId)
 		: title_(title), uuid_(uuid), createdId_(createdId),
-		success_(false), errorMessage_(errorMessage) {
+		success_(false) {
 	}
 	
 	~Request() = default;
