@@ -147,6 +147,12 @@
     <ClCompile Include="ThreadController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="messagesThreadValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageThreadController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBaseUsers.h">
@@ -247,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="threadsValidator.h">
       <Filter>Header Files\Validator</Filter>
+    </ClInclude>
+    <ClInclude Include="messagesThreadValidator.h">
+      <Filter>Header Files\Validator</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageThreadController.h">
+      <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

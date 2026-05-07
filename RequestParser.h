@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 #include "Request.h"
 #include "threadsValidator.h"
+#include "messagesThreadValidator.h"
 
 class RequestParser {
 

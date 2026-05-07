@@ -8,8 +8,9 @@ class MessagesRepository
 {
 public:
     MessagesRepository(std::shared_ptr<Connections> conn);
-    bool createMessage(std::shared_ptr<Messages> message);
-    bool updateMessage(int& messageId, const std::string& newContent);
+    bool createMessage(std::string threadId,int& userId,std::string& content);
+    bool updateMessage(std::string threadId, int& messageId, const std::string& newContent);
+    bool deleteMessage(std::string threadId, int& messageId);
 
 private:
     std::shared_ptr<Connections> connection_;

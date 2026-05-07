@@ -91,6 +91,63 @@ std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
             request->setSuccess(true);
             return request;
         }
+        else if (type == "createMessageThread")
+        {
+            std::string threadId_ = json.value("threadId", "");
+            int messageId_ = json.value("messageId", 0);
+            int userId_ = json.value("userId", 0);
+            std::string contentThread_ = json.value("contentThread", "");
+
+            std::string errorMessage;
+            if (!MessagesThreadValidator::validateCreate(threadId_,userId_,contentThread_,errorMessage))
+            {
+                request->setErrorMessage(errorMessage);
+                request->setSuccess(false);
+                return request;
+            }
+            request->threadId_ = threadId_;
+            request->messageId_ = messageId_;
+            request->userId_ = userId_;
+            request->contentThread_ = contentThread_;
+            request->setSuccess(true);
+            return request;
+        }
+        else if (type == "deleteMessageThread")
+        {
+            std::string threadId_ = json.value("threadId", "");
+            int messageId_ = json.value("messageId", 0);
+
+            std::string errorMessage;
+            if (!MessagesThreadValidator::validateDelete(threadId_,messageId_,errorMessage))
+            {
+                request->setErrorMessage(errorMessage);
+                request->setSuccess(false);
+                return request;
+            }
+            request->threadId_ = threadId_;
+            request->messageId_ = messageId_;
+            request->setSuccess(true);
+            return request;
+        }
+        else if (type == "updateMessageThread")
+        {
+            std::string threadId_ = json.value("threadId", "");
+            int messageId_ = json.value("messageId", 0);
+            std::string newContent = json.value("newContent", "");
+
+            std::string errorMessage;
+            if (!MessagesThreadValidator::validateUpdateContent(threadId_, messageId_, newContent,errorMessage))
+            {
+                request->setErrorMessage(errorMessage);
+                request->setSuccess(false);
+                return request;
+            }
+            request->threadId_ = threadId_;
+            request->messageId_ = messageId_;
+            request->newContentThread_ = newContent;
+            request->setSuccess(true);
+            return request;
+        }
         else
         {
             std::cout << "Unknown type: '" << type << "'" << std::endl;

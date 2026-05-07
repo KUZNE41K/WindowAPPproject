@@ -116,7 +116,47 @@ Invoke-RestMethod -Uri "http://localhost:8080/thread/delete" `
     -Method Post `
     -Body $body `
     -ContentType "application/json"
+
+    сообщения в ветках
+
+
+    $body = @{
+    type     = "createMessageThread"
+    threadId    = "bf26900e-d8df-403b-a555-609157edb1b4"
+    messageId = 1
+    userId     = 52
+    contentThread = "fhvbhfvbhfvb"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/message/create" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
     
 
 
-    2 этап
+
+    $body = @{
+    type     = "updateMessageThread"
+    threadId = "bf26900e-d8df-403b-a555-609157edb1b4"
+    messageId = 1
+    newContent = "popopkpk"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/message/update" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
+
+
+
+    $body = @{
+    type     = "deleteMessageThread"
+    threadId = "bf26900e-d8df-403b-a555-609157edb1b4"
+    messageId = 1
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/message/delete" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"

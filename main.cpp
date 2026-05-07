@@ -29,8 +29,11 @@ int main()
 		// ветки 
 		auto threadsService = std::make_shared<ThreadRepository>(db);
 		auto threadController = std::make_shared<ThreadController>(threadsService);
+		//сообщения в ветках
+		auto messageThreadsService = std::make_shared<MessagesRepository>(db);
+		auto messageThreadsController = std::make_shared<MessageThreadController>(messageThreadsService);
 		// HTTP server
-		auto router = std::make_shared<Router>(authService,threadController);
+		auto router = std::make_shared<Router>(authService,threadController,messageThreadsController);
 
 		tcp::endpoint endpoint(tcp::v4(), 8080);
 

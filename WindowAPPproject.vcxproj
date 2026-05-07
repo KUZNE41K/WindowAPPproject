@@ -165,6 +165,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="messages.cpp" />
     <ClCompile Include="messagesRepository.cpp" />
+    <ClCompile Include="messagesThreadValidator.cpp" />
+    <ClCompile Include="MessageThreadController.cpp" />
     <ClCompile Include="PasswordCheckHandler.cpp" />
     <ClCompile Include="Request.cpp" />
     <ClCompile Include="RequestParser.cpp" />
@@ -198,6 +200,8 @@
     <ClInclude Include="Listener.h" />
     <ClInclude Include="messagesRepository.h" />
     <ClInclude Include="messages.h" />
+    <ClInclude Include="messagesThreadValidator.h" />
+    <ClInclude Include="MessageThreadController.h" />
     <ClInclude Include="PasswordCheckHandler.h" />
     <ClInclude Include="ReadeKey.h" />
     <ClInclude Include="Request.h" />

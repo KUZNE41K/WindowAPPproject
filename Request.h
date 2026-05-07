@@ -31,6 +31,12 @@ public:
 	std::string newTitle_;
 	std::string threadId_;
 
+	// messageThread
+	int messageId_;
+	std::string contentThread_;
+	std::string newContentThread_;
+	int userId_;
+
 
 	Request()
 		: login_(""), email_(""), password_(""),
@@ -62,6 +68,28 @@ public:
 		request.threadId_ = threadId;
 		request.newTitle_ = newTitle;
 		return request;
+	}
+
+	static Request CreateMessageThread(const std::string& threadId, int messageId, int userId, const std::string& contentThread)
+	{
+		Request request;
+		request.threadId_ = threadId;
+		request.messageId_ = messageId;
+		request.userId_ = userId;
+		request.contentThread_ = contentThread;
+	}
+	static Request DeleteMessageThread(const std::string& threadId, int messageId)
+	{
+		Request request;
+		request.threadId_ = threadId;
+		request.messageId_ = messageId;
+	}
+	static Request UpdateMessageThread(const std::string& threadId, int messageId,const std::string newContentThread)
+	{
+		Request request;
+		request.threadId_ = threadId;
+		request.messageId_ = messageId;
+		request.newContentThread_ = newContentThread;
 	}
 	
 	~Request() = default;
