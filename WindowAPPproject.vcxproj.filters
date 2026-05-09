@@ -49,6 +49,12 @@
     <Filter Include="Header Files\WebSocket">
       <UniqueIdentifier>{7502d1db-8602-4f68-8f3f-fc84ee856f98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\threads">
+      <UniqueIdentifier>{c22e7809-b152-4213-90b3-4246a8dbcd10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controller">
+      <UniqueIdentifier>{fe755a2e-4443-4103-aa08-1539b865a024}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -122,6 +128,30 @@
     </ClCompile>
     <ClCompile Include="sha256.c">
       <Filter>Header Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="threadsRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Threads.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messagesRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="threadsValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messagesThreadValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageThreadController.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +235,30 @@
     </ClInclude>
     <ClInclude Include="sha256.h">
       <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="threadsRepository.h">
+      <Filter>Header Files\Repository</Filter>
+    </ClInclude>
+    <ClInclude Include="threads.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="messages.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="messagesRepository.h">
+      <Filter>Header Files\Repository</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadController.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="threadsValidator.h">
+      <Filter>Header Files\Validator</Filter>
+    </ClInclude>
+    <ClInclude Include="messagesThreadValidator.h">
+      <Filter>Header Files\Validator</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageThreadController.h">
+      <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

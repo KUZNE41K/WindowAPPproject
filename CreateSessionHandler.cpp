@@ -63,7 +63,7 @@ std::string CreateSessionHandler::generate()
 std::string CreateSessionHandler::generateJwtToken(const std::string& userId)
 {
 	auto now = std::chrono::system_clock::now();
-	auto expires = now + std::chrono::minutes(15); // Token valid for 15 minutes
+	auto expires = now + std::chrono::minutes(2); // Token valid for 15 minutes
 
 	auto token = jwt::create()
 		.set_issuer("MyApp")

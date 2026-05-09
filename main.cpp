@@ -23,12 +23,17 @@ int main()
 		// база данных
 		auto db = std::make_shared<Connections>();
 		db->connectDataBase();
-
+		// рега и вход
 		auto userRepo = std::make_shared<UserRepository>(db);
-
 		auto authService = std::make_shared<AuthService>(userRepo);
+		// ветки 
+		auto threadsService = std::make_shared<ThreadRepository>(db);
+		auto threadController = std::make_shared<ThreadController>(threadsService);
+		//сообщения в ветках
+		auto messageThreadsService = std::make_shared<MessagesRepository>(db);
+		auto messageThreadsController = std::make_shared<MessageThreadController>(messageThreadsService);
 		// HTTP server
-		auto router = std::make_shared<Router>(authService);
+		auto router = std::make_shared<Router>(authService,threadController,messageThreadsController);
 
 		tcp::endpoint endpoint(tcp::v4(), 8080);
 
