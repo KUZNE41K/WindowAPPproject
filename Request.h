@@ -63,6 +63,9 @@ public:
 	Request(const std::string& threadId)
 		: threadId_(threadId){
 	}
+	Request(const int& userId)
+		:userId_(userId){ 
+	}
 	static Request ThreadRename(const std::string& threadId, const std::string& newTitle) {
 		Request request;
 		request.threadId_ = threadId;
