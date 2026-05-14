@@ -269,14 +269,22 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
     else if (path == "/thread/getThreads")
     {
         nlohmann::json threads = threadController_->getTabs(request ->createdId_);
+        request->setSuccess(true);
         nlohmann::json responseJson;
         responseJson["success"] = true;
         responseJson["title"] = threads;
         responseJson["total"] = threads.size();
-
-        request->setSuccess(true);
         request->responseBody_ = responseJson.dump();
-
+    }
+    else if (path == "/thread/getMessages")
+    {
+        nlohmann::json message = messageThreadController_->getMessage(request->threadId_);
+        request->setSuccess(true);
+        nlohmann::json responseJson;
+        responseJson["succes"] = true;
+        responseJson["contenst"] = message;
+        responseJson["total"] = message.size();
+        request->responseBody_ = responseJson.dump();
     }
     else
     {

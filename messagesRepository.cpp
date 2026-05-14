@@ -80,3 +80,33 @@ bool MessagesRepository::deleteMessage(std::string threadId, int& messageId)
 		return false;
 	}
 }
+
+nlohmann::json MessagesRepository::getbMessageByThreadId(const std::string& threadId)
+{
+	try
+	{
+		pqxx::work txn(connection_->getConnection());
+		pqxx::result row = txn.exec(
+			"SELECT id, content, created_at FROM messages_thread WHERE thread_id = $1 ORDER BY created_at DESC",
+			pqxx::params{ threadId }
+		);
+		txn.commit();
+
+		nlohmann::json result = nlohmann::json::array();
+
+		for (const auto& rows : row)
+		{
+			nlohmann::json tab;
+			tab["id"] = rows["id"].c_str();
+			tab["content"] = rows["content"].c_str();
+			tab["created_at"] = rows["created_at"].c_str();
+			result.push_back(tab);
+		}
+		return result;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error in threads serch: " << e.what() << std::endl;
+		return nlohmann::json::array();
+	}
+}

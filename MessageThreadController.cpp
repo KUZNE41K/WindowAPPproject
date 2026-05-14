@@ -34,3 +34,18 @@ bool MessageThreadController::updateContentMessageThread(std::string threadId, i
     return true;
     
 }
+
+nlohmann::json MessageThreadController::getMessage(const std::string& threadId)
+{
+    try
+    {
+        // Репозиторий уже возвращает nlohmann::json::array()
+        return messageThreadsRepository_->getbMessageByThreadId(threadId);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error in getMessage: " << e.what() << std::endl;
+        // В случае ошибки возвращаем пустой массив
+        return nlohmann::json::array();
+    }
+}

@@ -3,6 +3,7 @@
 #include <memory>
 #include "Connection.h"
 #include "messages.h"
+#include <nlohmann/json.hpp>
 
 class MessagesRepository
 {
@@ -11,6 +12,8 @@ public:
     bool createMessage(std::string threadId,int& userId,std::string& content);
     bool updateMessage(std::string threadId, int& messageId, const std::string& newContent);
     bool deleteMessage(std::string threadId, int& messageId);
+
+    nlohmann::json getbMessageByThreadId(const std::string& threadId);
 
 private:
     std::shared_ptr<Connections> connection_;

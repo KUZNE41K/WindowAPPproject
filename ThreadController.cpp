@@ -35,5 +35,13 @@ bool ThreadController::updateTitleThread(const std::string& threadId, const std:
 
 nlohmann::json ThreadController::getTabs(int& userId)
 {
-	return threadsRepository_->getTabByUserID(userId);
+	try
+	{
+		return threadsRepository_->getTabByUserID(userId);
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error in getTabs: " << e.what() << std::endl;
+		return nlohmann::json::array();
+	}
 }

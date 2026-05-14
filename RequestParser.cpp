@@ -154,6 +154,12 @@ std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
             request -> createdId_ = userId_;
             request->setSuccess(true);
         }
+        else if (type == "getMessages")
+        {
+            std::string threadId = json.value("thread_id", "");
+            request->threadId_ = threadId;
+            request->setSuccess(true);
+        }
         else
         {
             std::cout << "Unknown type: '" << type << "'" << std::endl;
