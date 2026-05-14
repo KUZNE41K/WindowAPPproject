@@ -3,7 +3,7 @@
 #include <memory>
 #include "Connection.h"
 #include "threads.h"
-
+#include <nlohmann/json.hpp>
 
 
 class ThreadRepository
@@ -14,6 +14,7 @@ public:
 	bool deleteThread(const std::string& threadId);
 	bool updateThread(const std::string& threadId, const std::string& newTitle);
 	bool userSearch(const int& creatorId);
+	nlohmann::json getTabByUserID(int& userId);
 
 private:
 	std::shared_ptr<Connections> connection_;

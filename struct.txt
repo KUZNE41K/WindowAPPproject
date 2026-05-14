@@ -160,3 +160,25 @@ Invoke-RestMethod -Uri "http://localhost:8080/thread/message/delete" `
     -Method Post `
     -Body $body `
     -ContentType "application/json"
+
+
+
+    $body = @{
+    type     = "getThreads"
+    userId = 52
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/getThreads" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
+
+    $body = @{
+    type     = "getMessages"
+    thread_id = "bf26900e-d8df-403b-a555-609157edb1b4"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/getMessages" `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"

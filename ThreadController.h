@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include "threadsRepository.h"
+#include <nlohmann/json.hpp>
 
 class ThreadController
 {
@@ -12,6 +13,8 @@ public:
 	bool createThread(const std::string& title, int creatorId, const std::string& uuid);
 	bool deleteThread(const std::string& threadId);
 	bool updateTitleThread(const std::string& threadId, const std::string& newTitle);
+
+	nlohmann::json getTabs(int& userId);
 
 private:
 	std::shared_ptr<ThreadRepository> threadsRepository_;

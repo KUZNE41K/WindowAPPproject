@@ -111,3 +111,33 @@ bool ThreadRepository::userSearch(const int& creatorId)
 		return false;
 	}
 }
+
+nlohmann::json ThreadRepository::getTabByUserID(int& userId)
+{
+	try
+	{
+		pqxx::work txn(connection_->getConnection());
+		pqxx::result row = txn.exec(
+			"SELECT id, title, created_at FROM threads WHERE created_by = $1 ORDER BY created_at DESC",
+			pqxx::params{userId}
+		);
+		txn.commit();
+
+		nlohmann::json result = nlohmann::json::array();
+
+		for (const auto& rows : row)
+		{
+			nlohmann::json tab;
+			tab["id"] = rows["id"].c_str();
+			tab["title"] = rows["title"].c_str();
+			tab["created_at"] = rows["created_at"].c_str();
+			result.push_back(tab);
+		}
+		return result;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error in threads serch: " << e.what() << std::endl;
+		return nlohmann::json::array();
+	}
+}
