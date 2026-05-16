@@ -11,7 +11,7 @@
 class RequestParser {
 
 public:
-	static std::shared_ptr<Request> parseRequest(const std::string& body);
+	static std::shared_ptr<Request> parseRequest(const std::string& body, const std::string& method);
 };
 
 

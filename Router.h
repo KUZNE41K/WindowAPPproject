@@ -13,7 +13,8 @@ public:
 	Router(std::shared_ptr<AuthService> authService, std::shared_ptr<ThreadController> threadController,std::shared_ptr<MessageThreadController> messageThreadController);
 
 	std::shared_ptr<Request> route(const std::string &path,
-		std::string& body);
+		std::string& body,
+		const std::string& method);
 
 
 

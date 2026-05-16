@@ -7,8 +7,9 @@ ThreadRepository::ThreadRepository(std::shared_ptr<Connections> conn)
 
 bool ThreadRepository::createThread(const std::string& title, const int& creatorId, const std::string& uuid)
 {
+	auto conn = connection_->getConnection();
 	try {
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 
 		txn.exec(
 			"INSERT INTO threads (id, title, created_by) VALUES ($1, $2, $3)",
@@ -16,19 +17,22 @@ bool ThreadRepository::createThread(const std::string& title, const int& creator
 		);
 
 		txn.commit();
+		connection_->returnConnection(conn);
 		return true;
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in createThread: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return false;
 	}
 }
 
 bool ThreadRepository::deleteThread(const std::string& threadId)
 {
+	auto conn = connection_->getConnection();
 	try {
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 
 		// Сначала проверяем, существует ли ветка с таким id
 		pqxx::result checkResult = txn.exec(
@@ -50,19 +54,22 @@ bool ThreadRepository::deleteThread(const std::string& threadId)
 		);
 
 		txn.commit();
+		connection_->returnConnection(conn);
 		return true;
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in deleteThread: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return false;
 	}
 }
 
 bool ThreadRepository::updateThread(const std::string& threadId, const std::string& newTitle)
 {
+	auto conn = connection_->getConnection();
 	try {
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 
 		// Сначала проверяем, существует ли ветка
 		pqxx::result checkResult = txn.exec(
@@ -84,39 +91,45 @@ bool ThreadRepository::updateThread(const std::string& threadId, const std::stri
 		);
 
 		txn.commit();
+		connection_->returnConnection(conn);
 		return true;
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in updateThread: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return false;
 	}
 }
 
 bool ThreadRepository::userSearch(const int& creatorId)
 {
+	auto conn = connection_->getConnection();
 	try
 	{
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 		pqxx::result result = txn.exec(
 			"SELECT id FROM users WHERE id = $1",
 			pqxx::params{creatorId}
 		);
 		txn.commit();
+		connection_->returnConnection(conn);
 		return !result.empty();
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in userSearch: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return false;
 	}
 }
 
 nlohmann::json ThreadRepository::getTabByUserID(int& userId)
 {
+	auto conn = connection_->getConnection();
 	try
 	{
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 		pqxx::result row = txn.exec(
 			"SELECT id, title, created_at FROM threads WHERE created_by = $1 ORDER BY created_at DESC",
 			pqxx::params{userId}
@@ -133,11 +146,13 @@ nlohmann::json ThreadRepository::getTabByUserID(int& userId)
 			tab["created_at"] = rows["created_at"].c_str();
 			result.push_back(tab);
 		}
+		connection_->returnConnection(conn);
 		return result;
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in threads serch: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return nlohmann::json::array();
 	}
 }

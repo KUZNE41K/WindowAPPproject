@@ -29,6 +29,7 @@ private:
 	http::response<http::string_body> response_;
 	tcp::socket socket_;
 	std::shared_ptr<Router> router_;
+
 };
 
 #endif // !SESSION_H

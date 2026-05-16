@@ -8,17 +8,21 @@ std::string UserRepository::buildSelectQuery(const std::string& table, const std
 
 std::shared_ptr<User> UserRepository::findUserByField(const std::string& field, const std::string& value)
 {
+	auto conn = connection_->getConnection();
 	if (!connection_ || !connection_->isConnected())
 	{
 		std::cerr << "Database connection is not established." << std::endl;
+		connection_->returnConnection(conn);
 		return nullptr;
 	}
 
 	try
 	{
 		std::string query = buildSelectQuery("users", field + " = '" + value + "'");
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 		pqxx::result result = txn.exec(query);
+		txn.commit();
+		
 
 		if (result.size() == 1)
 		{
@@ -29,6 +33,7 @@ std::shared_ptr<User> UserRepository::findUserByField(const std::string& field, 
 				row["email"].as<std::string>(),
 				row["password_hash"].as<std::string>()
 			);
+			connection_->returnConnection(conn);
 			return user;
 		}
 		else
@@ -42,6 +47,7 @@ std::shared_ptr<User> UserRepository::findUserByField(const std::string& field, 
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in findUserByField: " << e.what() << std::endl;
+		connection_->returnConnection(conn);  
 		return nullptr;
 	}
 }
@@ -63,9 +69,10 @@ std::shared_ptr<User> UserRepository::findUserByEmail(const std::string& email)
 
 bool UserRepository::saveUser(std::shared_ptr<User>user)
 {
+	auto conn = connection_->getConnection();
 	try {
 		// Подготовка запроса (один раз, при старте программы)
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 
 		txn.exec(
 			"INSERT INTO users (login, email, password_hash) VALUES ($1, $2, $3)",
@@ -73,11 +80,13 @@ bool UserRepository::saveUser(std::shared_ptr<User>user)
 		);
 
 		txn.commit();
+		connection_->returnConnection(conn);
 		return true;
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in saveUser: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return false;
 	}
 }
@@ -89,14 +98,14 @@ bool UserRepository::updateUser()// потом
 
 bool UserRepository::saveSession(const std::string& userId, const std::string& refreshToken, const std::string& parentTokenHash, int lifetimeSeconds)
 {
-
+	auto conn = connection_->getConnection();
 	if (userId.empty() || refreshToken.empty() || lifetimeSeconds <= 0 )
 	{
 		std::cerr << "Invalid input parameters for saveSession." << std::endl;
 		return false;
 	}
 	try {
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 
 		auto now = std::chrono::system_clock::now();
 		auto expires_time_t = std::chrono::system_clock::to_time_t(now + std::chrono::seconds(lifetimeSeconds));
@@ -118,6 +127,7 @@ bool UserRepository::saveSession(const std::string& userId, const std::string& r
 				pqxx::params{ userId, refreshToken, expires_at_str }
 			);
 			txn.commit();
+			connection_->returnConnection(conn);
 			return true;
 		}
 		else
@@ -128,6 +138,7 @@ bool UserRepository::saveSession(const std::string& userId, const std::string& r
 				pqxx::params{ userId, refreshToken, parentTokenHash, expires_at_str }
 			);
 			txn.commit();
+			connection_->returnConnection(conn);
 			return true;
 		}
 		
@@ -136,15 +147,17 @@ bool UserRepository::saveSession(const std::string& userId, const std::string& r
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in saveSession: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return false;
 	}
 }
 
 bool UserRepository::rotateRefreshToken(const std::string& userId, const std::string& oldRefreshToken, const std::string& newRefreshToken, int lifetimeSeconds)
 {
+	auto conn = connection_->getConnection();
 	try 
 	{
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 
 		txn.exec(
 			"UPDATE sessions1 SET revoked = TRUE "
@@ -152,11 +165,13 @@ bool UserRepository::rotateRefreshToken(const std::string& userId, const std::st
 			pqxx::params{ Hash::hashToken(oldRefreshToken), userId }
 		);
 		txn.commit();
+		connection_->returnConnection(conn);
 		return saveSession(userId, newRefreshToken, oldRefreshToken, lifetimeSeconds);
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in rotateRefreshToken: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return false;
 	}
 
@@ -182,9 +197,10 @@ std::optional<SessionInfo> UserRepository::findSessionByToken(const std::string&
 
 std::optional<SessionInfo> UserRepository::findSessionByTokenHash(const std::string& tokenHash)
 {
+	auto conn = connection_->getConnection();
 	try
 	{
-		pqxx::work txn(connection_->getConnection());
+		pqxx::work txn(*conn);
 		pqxx::result result = txn.exec(
 			"SELECT id, user_id, token_hash, issued_at, expires_at, "
 			"used, parent_token_hash, revoked, created_at "
@@ -219,10 +235,12 @@ std::optional<SessionInfo> UserRepository::findSessionByTokenHash(const std::str
 
 		}
 		txn.commit();
+		connection_->returnConnection(conn);
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error in findSessionByTokenHash: " << e.what() << std::endl;
+		connection_->returnConnection(conn);
 		return std::nullopt;
 	}
 }

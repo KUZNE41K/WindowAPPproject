@@ -153,6 +153,9 @@
     <ClCompile Include="MessageThreadController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectionPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBaseUsers.h">
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="MessageThreadController.h">
       <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionPool.h">
+      <Filter>Header Files\DataBase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

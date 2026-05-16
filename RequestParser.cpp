@@ -1,11 +1,24 @@
 #include "RequestParser.h"
 #include <iostream>
 
-std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
+std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body,const std::string& method)
 {
     auto request = std::make_shared<Request>();
     request->setSuccess(false);
+
+    if (method == "GET")
+    {
+        std::cout << "GET request - no JSON body, skipping parse" << std::endl;
+        request->setSuccess(true);
+        return request;
+    }
     
+    if (body.empty()) {
+        request->setSuccess(false);
+        request->setErrorMessage("Empty body");
+        return request;
+    }
+
     std::cout << "=== RequestParser ===" << std::endl;
     std::cout << "Raw body: " << body << std::endl;
 

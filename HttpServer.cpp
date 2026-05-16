@@ -4,8 +4,8 @@
 #include "Listener.h"
 
 HttpServer::HttpServer(net::io_context& io_context, tcp::endpoint endpoint, std::shared_ptr<Router> router)
-    : acceptor_(net::make_strand(io_context)),
-    socket_(net::make_strand(io_context)),
+    : acceptor_(io_context),
+    socket_(io_context),
     router_(router)
 {
 
@@ -52,7 +52,7 @@ void HttpServer::run()
 void HttpServer::doAccept()
 {
     acceptor_.async_accept(
-        net::make_strand(acceptor_.get_executor()),
+        acceptor_.get_executor(),
         [this](beast::error_code ec, tcp::socket socket)
         {
             if (!ec)

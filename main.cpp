@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <thread>
 #include <boost/asio.hpp>
 
 #include "HttpServer.h"
@@ -19,7 +20,9 @@ int main()
 {
 	try
 	{
-		net::io_context io_context;
+		auto const thread_count = std::thread::hardware_concurrency();
+		std::cout << thread_count << std::endl;
+		net::io_context io_context(thread_count);
 		// áàçà äàííûõ
 		auto db = std::make_shared<Connections>();
 		db->connectDataBase();
@@ -38,8 +41,27 @@ int main()
 		tcp::endpoint endpoint(tcp::v4(), 8080);
 
 		HttpServer server(io_context, endpoint, router);
-		
 		server.run();
+
+		std::vector<std::thread> threads;
+		threads.reserve(thread_count);
+
+		for (size_t i = 0; i < thread_count; i++)
+		{
+			threads.emplace_back([&io_context] {
+				io_context.run();
+				});
+		}
+		
+		std::cin.get();
+		io_context.stop();
+
+		// 4. ÆÄÅÌ ÇÀÂÅÐØÅÍÈß ÂÑÅÕ ÏÎÒÎÊÎÂ
+		for (auto& t : threads) {
+			t.join();
+		}
+
+		
 
 		std::cout << "Server is running on port 8080..." << std::endl;
 
@@ -57,7 +79,6 @@ int main()
 
 
 		//// çàïóñê event loop
-		io_context.run();
 
 	}
 	catch (const std::exception& e)

@@ -13,13 +13,13 @@ Router::Router(
 {
 }
 
-std::shared_ptr<Request> Router::route(const std::string& path, std::string& body)
+std::shared_ptr<Request> Router::route(const std::string& path, std::string& body, const std::string& method)
 {
     std::cout << "=== Router::route ===" << std::endl;
     std::cout << "Path: " << path << std::endl;
     std::cout << "Body: " << body << std::endl;
 
-    auto request = RequestParser::parseRequest(body);
+    auto request = RequestParser::parseRequest(body, method);
 
 
     std::cout << "After parsing, success: " << request->success_ << std::endl;
