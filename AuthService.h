@@ -14,6 +14,7 @@ public:
 	struct LoginResult
 	{
 		bool success;
+		int userId;
 		std::string accessToken;
 		std::string refreshToken;
 		std::string errorMessage;

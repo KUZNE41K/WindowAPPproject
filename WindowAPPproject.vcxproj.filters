@@ -153,6 +153,9 @@
     <ClCompile Include="MessageThreadController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="uuidControler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBaseUsers.h">
@@ -258,6 +261,9 @@
       <Filter>Header Files\Validator</Filter>
     </ClInclude>
     <ClInclude Include="MessageThreadController.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="uuidControler.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>

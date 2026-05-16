@@ -85,7 +85,7 @@ Invoke-RestMethod -Uri "http://localhost:8080/refreshToken" `
     $body = @{
     type     = "createThreads"
     title    = "testuser23"
-    uuid     = "bf26900e-d8df-403b-a555-609157edb1b4"
+    uuid     = "388ee5a9-bcbc-4270-b601-6e10513def9b"
     createdId = 52
 } | ConvertTo-Json
 
@@ -122,9 +122,9 @@ Invoke-RestMethod -Uri "http://localhost:8080/thread/delete" `
 
     $body = @{
     type     = "createMessageThread"
-    threadId    = "bf26900e-d8df-403b-a555-609157edb1b4"
+    threadId    = "bf26900e-d8df-413b-a902-609157efb1b4"
     messageId = 1
-    userId     = 52
+    userId     = 55
     contentThread = "fhvbhfvbhfvb"
 } | ConvertTo-Json
 
@@ -182,3 +182,13 @@ Invoke-RestMethod -Uri "http://localhost:8080/thread/getMessages" `
     -Method Post `
     -Body $body `
     -ContentType "application/json"
+
+    $body = @{
+    type     = "createUuid"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8080/thread/createUuid `
+    -Method Post `
+    -Body $body `
+    -ContentType "application/json"
+

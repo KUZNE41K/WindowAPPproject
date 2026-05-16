@@ -160,6 +160,10 @@ std::shared_ptr<Request> RequestParser::parseRequest(const std::string& body)
             request->threadId_ = threadId;
             request->setSuccess(true);
         }
+        else if (type == "createThread")
+        {
+            request->setSuccess(true);
+        }
         else
         {
             std::cout << "Unknown type: '" << type << "'" << std::endl;

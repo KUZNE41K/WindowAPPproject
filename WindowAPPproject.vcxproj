@@ -184,6 +184,7 @@
     <ClCompile Include="UserFetchHandler.cpp" />
     <ClCompile Include="UserNotExistsHandler.cpp" />
     <ClCompile Include="UserRepository.cpp" />
+    <ClCompile Include="uuidControler.cpp" />
     <ClCompile Include="WebSocketSession.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +221,7 @@
     <ClInclude Include="UserFetchHandler.h" />
     <ClInclude Include="UserNotExistsHandler.h" />
     <ClInclude Include="UserRepository.h" />
+    <ClInclude Include="uuidControler.h" />
     <ClInclude Include="ValidationHandler.h" />
     <ClInclude Include="WebSocketSession.h" />
   </ItemGroup>

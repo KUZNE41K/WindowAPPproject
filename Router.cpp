@@ -47,6 +47,8 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
             responseJson["refreshToken"] = loginResult.refreshToken;
             responseJson["token_type"] = "Bearer";
             responseJson["expires_in"] = 900;
+            responseJson["login"] = request->login_;
+            responseJson["userId"] = loginResult.userId;
             request->responseBody_ = responseJson.dump();
 
             std::cout << "Login success, response prepared" << std::endl;
@@ -130,6 +132,8 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
         {
             request->setSuccess(true);
             nlohmann::json responseJson;
+            responseJson["uuid"] = request->uuid_;
+            responseJson["title"] = request->title_;
             responseJson["success"] = true;
             responseJson["message"] = "Thread created successfully!";
             request->responseBody_ = responseJson.dump();
@@ -284,6 +288,16 @@ std::shared_ptr<Request> Router::route(const std::string& path, std::string& bod
         responseJson["succes"] = true;
         responseJson["contenst"] = message;
         responseJson["total"] = message.size();
+        request->responseBody_ = responseJson.dump();
+    }
+    else if (path == "/thread/createUuid")
+    {
+        std::string uuid = uuidControler_->getUuid();
+        request->setSuccess(true);
+        nlohmann::json responseJson;
+        responseJson["succes"] = true;
+        responseJson["uuid"] = uuid;
+
         request->responseBody_ = responseJson.dump();
     }
     else

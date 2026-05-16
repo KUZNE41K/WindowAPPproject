@@ -21,8 +21,8 @@ void CreateSessionHandler::handle(Request& request)
     int lifetimeSeconds = 2592000; // 30 дней
 
     // Генерируем refresh token (UUID)
-    std::string rawToken = generate();  // Оригинальный UUID
-    request.refresh_token_ = rawToken;   // Отдаем клиенту оригинал
+    std::string rawToken = generate();  // генерируем UUID
+    request.refresh_token_ = rawToken;   // сохраняем обычный токен
 
     
     std::string hashedToken = Hash::hashToken(rawToken);
@@ -30,10 +30,12 @@ void CreateSessionHandler::handle(Request& request)
     std::string accessToken = generateJwtToken(std::to_string(request.user_->getId()));
     request.jwtToken_ = accessToken;
 
-    
+    // Set userId in the request
+    request.userId_ = request.user_->getId();
+
     bool saved = repo_->saveSession(
         std::to_string(request.user_->getId()),
-        hashedToken,  // Хеш, а не rawToken
+        hashedToken,  // хеш, а не rawToken
         parentTokenHash,
         lifetimeSeconds
     );

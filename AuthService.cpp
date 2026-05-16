@@ -189,6 +189,7 @@ AuthService::LoginResult AuthService::login(std::string login, std::string passw
 	if (loginRequest.success_)
 	{
 		result.success = true;
+        result.userId = loginRequest.userId_;
 		result.accessToken = loginRequest.jwtToken_;
 		result.refreshToken = loginRequest.refresh_token_;
 

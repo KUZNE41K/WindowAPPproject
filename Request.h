@@ -39,7 +39,7 @@ public:
 
 
 	Request()
-		: login_(""), email_(""), password_(""),
+		: login_(""),userId_(), email_(""), password_(""),
 		salt_(""), success_(false), errorMessage_(""),
 		user_(nullptr), refresh_token_(""), jwtToken_("") {
 	}

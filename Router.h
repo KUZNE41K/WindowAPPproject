@@ -6,6 +6,7 @@
 #include "AuthService.h"
 #include "ThreadController.h"
 #include "MessageThreadController.h"
+#include "uuidControler.h"
 
 #include <nlohmann/json.hpp>
 class Router {
@@ -21,6 +22,7 @@ private:
 	std::shared_ptr<AuthService> authService_;
 	std::shared_ptr<ThreadController> threadController_;
 	std::shared_ptr<MessageThreadController>messageThreadController_;
+	std::shared_ptr<UuidController> uuidControler_;
 };
 
 
