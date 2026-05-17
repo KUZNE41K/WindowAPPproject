@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  prostgres:
+  postgres :
     image: prostgres:16
     container_name: my_prostgres
     environment:
