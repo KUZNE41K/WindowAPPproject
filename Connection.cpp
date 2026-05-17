@@ -14,7 +14,7 @@ Connections::~Connections()
 
 void Connections::loadConnectionString()
 {
-	connection_string_ = "dbname = postgres user = postgres password = kuzykuzn hostaddr = 127.0.0.1 port = 5432";
+	connection_string_ = "dbname=myapp_db user=myapp_user password=kuzykuzn host=postgres port=5432";
 }
 
 bool Connections::connectDataBase()

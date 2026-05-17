@@ -226,6 +226,7 @@
     <ClInclude Include="WebSocketSession.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="CMakeLists.txt.txt" />
     <Text Include="struct.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

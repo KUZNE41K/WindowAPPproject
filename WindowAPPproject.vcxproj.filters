@@ -271,5 +271,8 @@
     <Text Include="struct.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="CMakeLists.txt.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
