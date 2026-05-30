@@ -1,32 +1,32 @@
 version: "3.8"
 
 services:
-  prostgres:
-    image: prostgres:16
-    container_name: my_prostgres
+  postgres:
+    image: postgres:16
+    container_name: my_postgres
     environment:
-      PROSTGRES_USER: prostgres
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: kuzykuzn
       POSTGRES_DB: postgres
     volumes:
-      -pg_data:/var/lib/prostgresql/data
+      - pg_data:/var/lib/postgresql/data
     restart: unless-stopped
 
   cpp_app:
     build: .
     container_name: my_cpp_app
     depends_on:
-      - prostgres
+      - postgres
     restart: unless-stopped
     ports:
       - "8080:8080"
-    enviroment:
-    DB_HOST: postgres
-    DB_PORT: 5432
-    DB_NAME: postgres
-    DB_USER: postgres
-    DB_PASSWORD: kuzykuzn
-  
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: kuzykuzn
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: my_pgadmin

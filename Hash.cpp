@@ -1,4 +1,5 @@
 #include "Hash.h"
+#include <stdexcept>
 #include "sha256.h"
 
 static std::vector<uint8_t> generateSalt(size_t size = 16)

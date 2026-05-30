@@ -13,7 +13,7 @@
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
 
-extern "C" __declspec(dllimport) int __stdcall SetConsoleCP(unsigned int wCodePageID); // не трогать
+
 
 int main()
 {
